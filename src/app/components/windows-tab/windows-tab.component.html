@@ -1,0 +1,25 @@
+<div class="tab-content">
+  <h2>Windows Management</h2>
+  <p class="subtitle">View and manage service windows</p>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading"></div>
+  </div>
+
+  <div *ngIf="!loading">
+    <div class="windows-list">
+      <div *ngFor="let window of windows" class="window-item">
+        <div class="window-info">
+          <div class="window-number">Window {{ window.number }}</div>
+          <div class="window-name">{{ window.name }}</div>
+        </div>
+        <div class="window-status">
+          <span [class]="window.isActive ? 'status-active' : 'status-inactive'">
+            {{ window.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

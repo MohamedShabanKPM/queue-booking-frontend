@@ -1,0 +1,69 @@
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.current-window-info {
+  background: rgba(212, 175, 55, 0.1);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.current-window-info h3 {
+  color: #D4AF37;
+  margin-bottom: 0.5rem;
+}
+
+.windows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.window-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.window-card:hover {
+  border-color: #D4AF37;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+}
+
+.window-card.selected {
+  border-color: #D4AF37;
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+}
+
+.window-number-large {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #D4AF37, #FFD700, #B8860B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.window-name {
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.selected-badge {
+  color: #10b981;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+

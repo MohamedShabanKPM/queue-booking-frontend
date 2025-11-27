@@ -1,0 +1,12 @@
+<nav *ngIf="authService.isAuthenticated()" style="background: rgba(255, 255, 255, 0.95); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <a routerLink="/dashboard" style="text-decoration: none; color: #D4AF37; font-weight: 600; font-size: 1.2rem;">Queue Management</a>
+  </div>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <span *ngIf="authService.getCurrentUser()" style="color: #666;">
+      {{ authService.getCurrentUser()?.name }}
+    </span>
+    <button (click)="logout()" class="btn-logout">Logout</button>
+  </div>
+</nav>
+

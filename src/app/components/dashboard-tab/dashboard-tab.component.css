@@ -1,0 +1,59 @@
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-filter label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.time-stats-section,
+.employee-stats-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.time-stats-section h3,
+.employee-stats-section h3 {
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.time-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.time-stat {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time-stat label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.time-stat span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #D4AF37;
+}
+

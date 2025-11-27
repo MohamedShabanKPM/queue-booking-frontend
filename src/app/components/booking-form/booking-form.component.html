@@ -1,0 +1,80 @@
+<div class="queue-booking-container">
+  <div class="queue-booking-card">
+    <div class="queue-booking-header">
+      <div class="btc-logo-container">
+        <img src="/assets/img/btc.svg" alt="BTC Logo" class="btc-logo" />
+      </div>
+      <h1 class="queue-booking-title">Smart Queue System</h1>
+      <p class="queue-booking-subtitle">Reserve Your Turn Effortlessly</p>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <div *ngIf="success && bookingResponse" class="alert alert-success" style="text-align: center;">
+      <h3 style="font-size: 2rem; margin-bottom: 1rem;">✓ Booking Confirmed!</h3>
+      <div class="queue-number">#{{ bookingResponse.queueNumber }}</div>
+      <p><strong>Name:</strong> {{ bookingResponse.name }}</p>
+      <p><strong>Phone:</strong> {{ bookingResponse.phone }}</p>
+      <p><strong>Status:</strong> {{ bookingResponse.status }}</p>
+      <button class="submit-btn" (click)="resetForm()" style="margin-top: 20px;">Make Another Booking</button>
+    </div>
+
+    <form *ngIf="!success" (ngSubmit)="onSubmit()" #bookingForm="ngForm">
+      <div class="form-group">
+        <label class="form-label">Your Full Name *</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="booking.name" 
+          name="name" 
+          required 
+          minlength="2"
+          placeholder="Enter your full name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mobile Number *</label>
+        <input 
+          type="tel" 
+          class="form-control" 
+          [(ngModel)]="booking.phone" 
+          name="phone" 
+          required 
+          minlength="10"
+          placeholder="Enter your mobile number">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email (Optional)</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          [(ngModel)]="booking.email" 
+          name="email"
+          placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Your Date *</label>
+        <select 
+          class="form-control" 
+          [(ngModel)]="booking.bookingDateSelection" 
+          name="bookingDateSelection" 
+          required>
+          <option value="today">📅 Today</option>
+        </select>
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-btn" 
+        [disabled]="loading">
+        <span *ngIf="!loading">✓ Confirm Booking</span>
+        <span *ngIf="loading" class="loading"></span>
+      </button>
+    </form>
+  </div>
+</div>
+

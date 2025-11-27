@@ -1,0 +1,34 @@
+<div class="tab-content">
+  <h2>Select Your Window</h2>
+  <p class="subtitle">Choose a window to manage bookings</p>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <div *ngIf="currentWindow" class="current-window-info">
+    <h3>Current Window: Window {{ currentWindow.number }}</h3>
+    <p>{{ currentWindow.name }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading"></div>
+  </div>
+
+  <div *ngIf="!loading" class="windows-grid">
+    <div 
+      *ngFor="let window of windows" 
+      class="window-card"
+      [class.selected]="currentWindow?.id === window.id"
+      (click)="selectWindow(window)">
+      <div class="window-number-large">{{ window.number }}</div>
+      <div class="window-name">{{ window.name }}</div>
+      <div *ngIf="currentWindow?.id === window.id" class="selected-badge">✓ Selected</div>
+    </div>
+  </div>
+</div>
+

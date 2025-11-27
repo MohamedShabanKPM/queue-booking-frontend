@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="card">
+    <h1 style="color: #667eea; margin-bottom: 20px;">All Bookings</h1>
+
+    <div class="form-group" style="max-width: 300px;">
+      <label class="form-label">Filter by Status</label>
+      <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option value="">All</option>
+        <option value="waiting">Waiting</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <div *ngIf="loading" style="text-align: center; padding: 40px;">
+      <div class="loading"></div>
+    </div>
+
+    <div *ngIf="!loading">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Queue #</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Window</th>
+            <th>Status</th>
+            <th>Booking Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings">
+            <td><strong>#{{ booking.queueNumber }}</strong></td>
+            <td>{{ booking.name }}</td>
+            <td>{{ booking.phone }}</td>
+            <td>{{ booking.email || '-' }}</td>
+            <td>{{ booking.windowNumber ? 'Window ' + booking.windowNumber : '-' }}</td>
+            <td>
+              <span [class]="getStatusClass(booking.status)">
+                {{ booking.status }}
+              </span>
+            </td>
+            <td>{{ booking.bookingDate | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="bookings.length === 0" style="text-align: center; padding: 40px; color: #6b7280;">
+        No bookings found
+      </div>
+    </div>
+  </div>
+</div>
+

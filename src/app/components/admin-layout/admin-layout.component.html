@@ -1,0 +1,57 @@
+<div class="admin-layout">
+  <div class="admin-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/assets/img/btc.svg" alt="BTC Logo" class="header-logo" />
+        <h1>Queue Management System</h1>
+      </div>
+      <div class="user-section">
+        <span class="user-name">{{ authService.getCurrentUser()?.name }}</span>
+        <button class="btn-logout" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'bookings'"
+      (click)="setActiveTab('bookings')">
+      📋 Bookings
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'tracking'"
+      (click)="setActiveTab('tracking')">
+      📊 Queue Tracking
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'select-window'"
+      (click)="setActiveTab('select-window')">
+      🪟 Select Window
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'windows'"
+      (click)="setActiveTab('windows')">
+      🏢 Windows
+    </button>
+    <button 
+      *ngIf="authService.isAdmin()"
+      class="tab-button" 
+      [class.active]="activeTab === 'dashboard'"
+      (click)="setActiveTab('dashboard')">
+      📈 Dashboard
+    </button>
+  </div>
+
+  <div class="admin-content">
+    <app-bookings-tab *ngIf="activeTab === 'bookings'"></app-bookings-tab>
+    <app-tracking-tab *ngIf="activeTab === 'tracking'"></app-tracking-tab>
+    <app-select-window-tab *ngIf="activeTab === 'select-window'"></app-select-window-tab>
+    <app-windows-tab *ngIf="activeTab === 'windows'"></app-windows-tab>
+    <app-dashboard-tab *ngIf="activeTab === 'dashboard' && authService.isAdmin()"></app-dashboard-tab>
+  </div>
+</div>
+

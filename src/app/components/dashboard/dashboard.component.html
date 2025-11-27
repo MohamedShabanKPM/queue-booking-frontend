@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="card">
+    <h1 style="color: #667eea; margin-bottom: 20px;">Queue Dashboard</h1>
+    
+    <div class="form-group" style="max-width: 300px;">
+      <label class="form-label">Select Date</label>
+      <input 
+        type="date" 
+        class="form-control" 
+        [(ngModel)]="selectedDate" 
+        (change)="onDateChange()">
+    </div>
+
+    <div *ngIf="loading" style="text-align: center; padding: 40px;">
+      <div class="loading"></div>
+    </div>
+
+    <div *ngIf="stats && !loading">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>{{ stats.totalToday }}</h3>
+          <p>Total Bookings</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ stats.waiting }}</h3>
+          <p>Waiting</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ stats.inProgress }}</h3>
+          <p>In Progress</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ stats.completed }}</h3>
+          <p>Completed</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ stats.cancelled }}</h3>
+          <p>Cancelled</p>
+        </div>
+      </div>
+
+      <div *ngIf="stats.timeStats && stats.timeStats.totalCompleted > 0" class="card" style="margin-top: 20px;">
+        <h2>Time Statistics</h2>
+        <p><strong>Average Time:</strong> {{ stats.timeStats.average }}</p>
+        <p><strong>Min Time:</strong> {{ stats.timeStats.min }}</p>
+        <p><strong>Max Time:</strong> {{ stats.timeStats.max }}</p>
+        <p><strong>Total Completed:</strong> {{ stats.timeStats.totalCompleted }}</p>
+      </div>
+
+      <div *ngIf="stats.employeeStats.length > 0" class="card" style="margin-top: 20px;">
+        <h2>Employee Statistics</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Total</th>
+              <th>Completed</th>
+              <th>Cancelled</th>
+              <th>Avg Time</th>
+              <th>Min Time</th>
+              <th>Max Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let emp of stats.employeeStats">
+              <td>{{ emp.name }}</td>
+              <td>{{ emp.count }}</td>
+              <td>{{ emp.completed }}</td>
+              <td>{{ emp.cancelled }}</td>
+              <td>{{ emp.averageTime }}</td>
+              <td>{{ emp.minTime }}</td>
+              <td>{{ emp.maxTime }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,63 @@
+.windows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.window-item {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.window-item:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.1);
+}
+
+.window-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.window-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #D4AF37;
+  min-width: 120px;
+}
+
+.window-name {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.window-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-active {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.status-inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+

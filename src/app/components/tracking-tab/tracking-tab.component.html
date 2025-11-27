@@ -1,0 +1,36 @@
+<div class="tab-content tracking-content">
+  <div class="tracking-header">
+    <h2>Queue Tracking</h2>
+    <div class="current-time">{{ currentTime }}</div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading"></div>
+  </div>
+
+  <div *ngIf="status && !loading" class="tracking-display">
+    <div class="serving-section">
+      <div class="serving-label">Now Serving</div>
+      <div class="serving-number-large">{{ status.currentServing || 0 }}</div>
+      <div *ngIf="status.windowNumber" class="window-number">
+        Window {{ status.windowNumber }}
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-value">{{ status.waitingCount }}</div>
+        <div class="stat-label">Waiting</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">{{ status.completedCount }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">{{ status.totalBookings }}</div>
+        <div class="stat-label">Total</div>
+      </div>
+    </div>
+  </div>
+</div>
+
