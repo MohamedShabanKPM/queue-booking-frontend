@@ -5,6 +5,7 @@
       <div class="filter-group">
         <label>Date:</label>
         <input type="date" [(ngModel)]="selectedDate" (change)="onFilterChange()" class="form-control">
+        <button class="btn btn-secondary" (click)="setToday()" style="margin-top: 5px;">Today</button>
       </div>
       <div class="filter-group">
         <label>Status:</label>
@@ -24,56 +25,26 @@
   </div>
 
   <div *ngIf="!loading">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Queue #</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Window</th>
-          <th>Status</th>
-          <th>Booking Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let booking of bookings">
-          <td><strong>#{{ booking.queueNumber }}</strong></td>
-          <td>{{ booking.name }}</td>
-          <td>{{ booking.phone }}</td>
-          <td>{{ booking.email || '-' }}</td>
-          <td>{{ booking.windowNumber ? 'Window ' + booking.windowNumber : '-' }}</td>
-          <td>
-            <span [class]="getStatusClass(booking.status)">
-              {{ booking.status }}
-            </span>
-          </td>
-          <td>{{ booking.bookingDate | date:'short' }}</td>
-          <td>
-            <button *ngIf="booking.status === 'waiting'" 
-                    class="btn-action btn-start" 
-                    (click)="startProcessing(booking)">
-              Start
-            </button>
-            <button *ngIf="booking.status === 'in_progress'" 
-                    class="btn-action btn-complete" 
-                    (click)="completeBooking(booking)">
-              Complete
-            </button>
-            <button *ngIf="booking.status !== 'completed'" 
-                    class="btn-action btn-cancel" 
-                    (click)="cancelBooking(booking)">
-              Cancel
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div *ngIf="bookings.length === 0" class="empty-state">
-      No bookings found
-    </div>
+    <app-queue-list
+      [data]="getListData()"
+      [columns]="listColumns"
+      [headerButtons]="headerButtons"
+      [rowButtons]="rowButtons"
+      [getRowDecoration]="getRowDecoration"
+      (rowClick)="onRowClick($event)">
+    </app-queue-list>
   </div>
+
+  <!-- Queue Popup -->
+  <app-queue-popup
+    *ngIf="selectedBooking"
+    [visible]="showPopup"
+    [title]="'Reservation Details'"
+    [data]="selectedBooking"
+    [fields]="popupFields"
+    [buttons]="popupButtons"
+    [statusBar]="popupStatusBar"
+    (close)="closePopup()">
+  </app-queue-popup>
 </div>
 

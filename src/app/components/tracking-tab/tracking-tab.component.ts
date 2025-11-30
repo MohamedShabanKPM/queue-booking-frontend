@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QueueService } from '../../services/queue.service';
 import { QueueStatusDto } from '../../models/queue-status.model';
+import { VoiceService } from '../../services/voice.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,8 +18,13 @@ export class TrackingTabComponent implements OnInit, OnDestroy {
   currentTime: string = '';
   private subscription?: Subscription;
   private timeInterval?: any;
+  private lastAnnouncedNumber: number = 0;
+  private lastAnnouncedWindow: number | null = null;
 
-  constructor(private queueService: QueueService) { }
+  constructor(
+    private queueService: QueueService,
+    private voiceService: VoiceService
+  ) { }
 
   ngOnInit() {
     this.updateTime();
@@ -26,6 +32,19 @@ export class TrackingTabComponent implements OnInit, OnDestroy {
     
     this.subscription = this.queueService.getStatusPolling(2000).subscribe({
       next: (data) => {
+        // Check if number changed and announce
+        if (data.currentServing > 0 && 
+            (data.currentServing !== this.lastAnnouncedNumber || 
+             data.windowNumber !== this.lastAnnouncedWindow)) {
+          this.voiceService.announceReservation(
+            data.currentServing, 
+            data.windowNumber || undefined,
+            data.windowName
+          );
+          this.lastAnnouncedNumber = data.currentServing;
+          this.lastAnnouncedWindow = data.windowNumber || null;
+        }
+        
         this.status = data;
         this.loading = false;
       },

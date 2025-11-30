@@ -1,0 +1,247 @@
+/* Queue Popup/Modal */
+.queue-popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.queue-popup-dialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.queue-popup-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.queue-popup-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.queue-popup-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.queue-popup-close:hover {
+  background: #e9ecef;
+  color: #212529;
+}
+
+.queue-popup-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.popup-title-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.popup-title-section h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-title-section h3 i {
+  color: #D4AF37;
+}
+
+.popup-form-groups {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.form-group-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.form-group-section .form-group {
+  margin-bottom: 15px;
+}
+
+.popup-statusbar {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.popup-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.popup-buttons .btn {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.popup-buttons .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.popup-buttons .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.popup-buttons .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.popup-buttons .btn-success:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.popup-buttons .btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.popup-buttons .btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #e0a800;
+}
+
+.popup-buttons .btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+.popup-buttons .btn-info:hover {
+  background-color: #138496;
+  border-color: #138496;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.status-waiting {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.status-in-progress {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.status-cancelled {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+.statusbar-widget {
+  padding: 8px 0;
+}
+
+@media (max-width: 768px) {
+  .popup-form-groups {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .queue-popup-dialog {
+    width: 95%;
+    max-height: 95vh;
+  }
+}
+

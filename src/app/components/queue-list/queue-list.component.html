@@ -1,0 +1,63 @@
+<div class="queue-list-view">
+  <!-- Header Buttons -->
+  <div class="queue-list-header" *ngIf="headerButtons.length > 0">
+    <button
+      *ngFor="let btn of headerButtons"
+      [class]="'btn ' + (btn.class || 'btn-primary')"
+      (click)="btn.action(null)">
+      <i *ngIf="btn.icon" [class]="btn.icon"></i>
+      {{ btn.label }}
+    </button>
+  </div>
+
+  <!-- List Table -->
+  <div class="queue-list-table-container">
+    <table class="queue-list-table">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns">{{ col.label }}</th>
+          <th *ngIf="rowButtons.length > 0">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let row of data"
+          [class]="getRowDecoration ? getRowDecoration(row) : ''"
+          [class.queue-row-clickable]="rowClick.observers.length > 0"
+          (click)="onRowClick(row)">
+          <td *ngFor="let col of columns">
+            <span *ngIf="col.type === 'status'" 
+                  [class]="'status-badge ' + getStatusClass(row[col.name])">
+              {{ formatValue(row[col.name], col) }}
+            </span>
+            <span *ngIf="col.type !== 'status'">
+              {{ formatValue(row[col.name], col) }}
+            </span>
+          </td>
+          <td *ngIf="rowButtons.length > 0" class="queue-row-actions" (click)="$event.stopPropagation()">
+            @for (btn of rowButtons; track btn) {
+              @if (!btn.visible || btn.visible(row)) {
+                <button
+                  [class]="'btn-link ' + (btn.class || '')"
+                  (click)="btn.action(row)"
+                  [title]="btn.label">
+                  @if (btn.icon) {
+                    <i [class]="btn.icon"></i>
+                  }
+                  @if (!btn.icon) {
+                    <span>{{ btn.label }}</span>
+                  }
+                </button>
+              }
+            }
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="data.length === 0" class="queue-empty-state">
+    No records found
+  </div>
+</div>
+

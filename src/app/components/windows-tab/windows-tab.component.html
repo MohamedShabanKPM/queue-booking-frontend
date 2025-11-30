@@ -1,25 +1,83 @@
 <div class="tab-content">
-  <h2>Windows Management</h2>
-  <p class="subtitle">View and manage service windows</p>
+  <div class="tab-header">
+    <h2>Windows Management</h2>
+  </div>
 
   <div *ngIf="loading" class="loading-container">
     <div class="loading"></div>
   </div>
 
   <div *ngIf="!loading">
-    <div class="windows-list">
-      <div *ngFor="let window of windows" class="window-item">
-        <div class="window-info">
-          <div class="window-number">Window {{ window.number }}</div>
-          <div class="window-name">{{ window.name }}</div>
-        </div>
-        <div class="window-status">
-          <span [class]="window.isActive ? 'status-active' : 'status-inactive'">
-            {{ window.isActive ? 'Active' : 'Inactive' }}
-          </span>
-        </div>
+    <app-queue-list
+      [data]="getListData()"
+      [columns]="listColumns"
+      [headerButtons]="headerButtons"
+      [rowButtons]="rowButtons"
+      [getRowDecoration]="getRowDecoration"
+      (rowClick)="onRowClick($event)">
+    </app-queue-list>
+  </div>
+
+  <!-- Create/Edit Form Popup -->
+  <div *ngIf="showCreateForm" class="queue-popup-backdrop" (click)="closeForm()">
+    <div class="queue-popup-dialog" (click)="$event.stopPropagation()">
+      <div class="queue-popup-header">
+        <h2 class="queue-popup-title">
+          <i class="fa fa-window-maximize"></i> {{ editingWindow ? 'Edit Window' : 'Create New Window' }}
+        </h2>
+        <button class="queue-popup-close" (click)="closeForm()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="queue-popup-body">
+        <form (ngSubmit)="saveWindow()">
+          <div class="form-group">
+            <label class="form-label">Window Number *</label>
+            <input 
+              type="number" 
+              name="number" 
+              [value]="editingWindow?.number || ''"
+              [readonly]="!!editingWindow"
+              class="form-control" 
+              required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Window Name *</label>
+            <input 
+              type="text" 
+              name="name" 
+              [value]="editingWindow?.name || ''"
+              class="form-control" 
+              required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Active</label>
+            <select name="isActive" class="form-control">
+              <option [value]="true" [selected]="!editingWindow || editingWindow.isActive">Active</option>
+              <option [value]="false" [selected]="editingWindow && !editingWindow.isActive">Inactive</option>
+            </select>
+          </div>
+          <div class="popup-buttons">
+            <button type="submit" class="btn btn-primary">
+              {{ editingWindow ? 'Update' : 'Create' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</div>
 
+  <!-- Window Details Popup -->
+  <app-queue-popup
+    *ngIf="selectedWindow"
+    [visible]="showPopup"
+    [title]="'Window Details'"
+    [data]="selectedWindow"
+    [fields]="[]"
+    [buttons]="[]"
+    (close)="closePopup()">
+  </app-queue-popup>
+</div>

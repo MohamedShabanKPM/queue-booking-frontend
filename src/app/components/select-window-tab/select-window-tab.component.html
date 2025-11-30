@@ -11,8 +11,8 @@
   </div>
 
   <div *ngIf="currentWindow" class="current-window-info">
-    <h3>Current Window: Window {{ currentWindow.number }}</h3>
-    <p>{{ currentWindow.name }}</p>
+    <h3>Current Window: {{ currentWindow.name }}</h3>
+    <p>Window Number: {{ currentWindow.number }}</p>
   </div>
 
   <div *ngIf="loading" class="loading-container">
@@ -25,8 +25,8 @@
       class="window-card"
       [class.selected]="currentWindow?.id === window.id"
       (click)="selectWindow(window)">
-      <div class="window-number-large">{{ window.number }}</div>
-      <div class="window-name">{{ window.name }}</div>
+      <div class="window-name-large">{{ window.name }}</div>
+      <div class="window-number">#{{ window.number }}</div>
       <div *ngIf="currentWindow?.id === window.id" class="selected-badge">✓ Selected</div>
     </div>
   </div>

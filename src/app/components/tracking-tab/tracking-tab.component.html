@@ -12,8 +12,8 @@
     <div class="serving-section">
       <div class="serving-label">Now Serving</div>
       <div class="serving-number-large">{{ status.currentServing || 0 }}</div>
-      <div *ngIf="status.windowNumber" class="window-number">
-        Window {{ status.windowNumber }}
+      <div *ngIf="status.windowName || status.windowNumber" class="window-number">
+        {{ status.windowName || ('Window ' + status.windowNumber) }}
       </div>
     </div>
 

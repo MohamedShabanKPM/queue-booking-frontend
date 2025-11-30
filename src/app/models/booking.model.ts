@@ -14,7 +14,13 @@ export interface BookingResponseDto {
   queueNumber: number;
   status: string;
   windowNumber?: number;
+  windowName?: string;
   displayName: string;
+  actualStartTime?: string;
+  actualEndTime?: string;
+  timeTaken?: string;
+  startedByUserId?: number;
+  startedByName?: string;
 }
 
 export interface DashboardStatsDto {

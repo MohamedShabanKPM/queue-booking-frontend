@@ -77,7 +77,7 @@ export class SelectWindowTabComponent implements OnInit {
     this.http.post(`http://localhost:5000/api/windows/assign?userId=${user.id}&windowId=${window.id}`, {}).subscribe({
       next: () => {
         this.currentWindow = window;
-        this.success = `Window ${window.number} assigned successfully!`;
+        this.success = `${window.name} assigned successfully!`;
         this.loading = false;
       },
       error: (err) => {

@@ -1,0 +1,88 @@
+<div class="queue-form-view">
+  <!-- Header with Status Bar -->
+  <div class="queue-form-header">
+    <div class="queue-form-buttons">
+      @for (btn of headerButtons; track btn) {
+        @if (btn.visible !== false) {
+          <button
+            [class]="'btn ' + (btn.class || 'btn-primary')"
+            (click)="btn.action()">
+            @if (btn.icon) {
+              <i [class]="btn.icon"></i>
+            }
+            {{ btn.label }}
+          </button>
+        }
+      }
+    </div>
+    <div *ngIf="statusBar" class="queue-statusbar">
+      <div class="statusbar-states">
+        <span
+          *ngFor="let state of statusBar.states"
+          [class]="'statusbar-state ' + (state === statusBar.currentState ? 'active' : '')"
+          [class.completed]="getStateIndex(state) < getStateIndex(statusBar.currentState)">
+          {{ state }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Sheet -->
+  <div class="queue-form-sheet">
+    <!-- Button Box -->
+    <div *ngIf="buttonBox" class="form-button-box">
+      <button class="form-stat-button" (click)="buttonBox.action()">
+        <i [class]="buttonBox.icon"></i>
+        <span>{{ buttonBox.label }}</span>
+      </button>
+    </div>
+
+    <!-- Title -->
+    <div *ngIf="title" class="form-title">
+      <h1>{{ title }}</h1>
+    </div>
+
+    <!-- Form Fields -->
+    <div class="queue-form-content">
+      <div class="form-group" *ngFor="let field of fields" [class.invisible]="field.invisible" [class.full-width]="field.type === 'statusbar'">
+        <label class="form-label">{{ field.label }}</label>
+        <div *ngIf="field.type === 'statusbar'" class="statusbar-widget">
+          <span [class]="'status-badge ' + getStatusClass(data[field.name])">
+            {{ data[field.name] }}
+          </span>
+        </div>
+        <input
+          *ngIf="field.type === 'text' || field.type === 'number'"
+          [type]="field.type"
+          [value]="data[field.name]"
+          [readonly]="field.readonly"
+          [class]="'form-control' + (field.readonly ? ' readonly' : '')"
+          (input)="onFieldChange(field.name, $any($event.target).value)"
+          class="form-control" />
+        <textarea
+          *ngIf="field.type === 'textarea'"
+          [value]="data[field.name]"
+          [readonly]="field.readonly"
+          [class]="'form-control' + (field.readonly ? ' readonly' : '')"
+          (input)="onFieldChange(field.name, $any($event.target).value)"
+          class="form-control"></textarea>
+        <select
+          *ngIf="field.type === 'select'"
+          [value]="data[field.name]"
+          [disabled]="field.readonly"
+          (change)="onFieldChange(field.name, $any($event.target).value)"
+          class="form-control">
+          <option *ngFor="let opt of field.options" [value]="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+        <div
+          *ngIf="field.type === 'date'"
+          class="form-control readonly">
+          {{ data[field.name] | date:'short' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
