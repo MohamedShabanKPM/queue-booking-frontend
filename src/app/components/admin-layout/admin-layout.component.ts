@@ -1,25 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { BookingsTabComponent } from '../bookings-tab/bookings-tab.component';
-import { TrackingTabComponent } from '../tracking-tab/tracking-tab.component';
-import { SelectWindowTabComponent } from '../select-window-tab/select-window-tab.component';
-import { WindowsTabComponent } from '../windows-tab/windows-tab.component';
-import { DashboardTabComponent } from '../dashboard-tab/dashboard-tab.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
   imports: [
     CommonModule, 
-    RouterModule,
-    BookingsTabComponent,
-    TrackingTabComponent,
-    SelectWindowTabComponent,
-    WindowsTabComponent,
-    DashboardTabComponent
+    RouterModule
   ],
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.css']
@@ -29,14 +19,34 @@ export class AdminLayoutComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    // If user tries to access dashboard but is not admin, redirect to bookings
-    const user = this.authService.getCurrentUser();
-    if (user && !this.authService.isAdmin()) {
+    // Set active tab based on current route
+    this.updateActiveTab();
+    
+    // Listen to route changes
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateActiveTab();
+    });
+  }
+
+  updateActiveTab() {
+    const url = this.router.url;
+    if (url.includes('/bookings')) {
       this.activeTab = 'bookings';
+    } else if (url.includes('/tracking')) {
+      this.activeTab = 'tracking';
+    } else if (url.includes('/select-window')) {
+      this.activeTab = 'select-window';
+    } else if (url.includes('/windows')) {
+      this.activeTab = 'windows';
+    } else if (url.includes('/dashboard')) {
+      this.activeTab = 'dashboard';
     }
   }
 
@@ -45,7 +55,9 @@ export class AdminLayoutComponent implements OnInit {
     if (tab === 'dashboard' && !this.authService.isAdmin()) {
       return;
     }
-    this.activeTab = tab;
+    // Map tracking tab to tracking route to avoid conflict with public tracking
+    const route = tab === 'tracking' ? 'tracking' : tab;
+    this.router.navigate([`/${route}`]);
   }
 
   logout() {

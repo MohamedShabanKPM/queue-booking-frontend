@@ -1,10 +1,10 @@
-<div class="queue-tracking-container">
+<div class="queue-tracking-container" [class.loaded]="!loading && status">
   <div class="queue-tracking-header">
     <div class="btc-logo-container">
-      <img src="/assets/img/btc-white.svg" alt="BTC Logo" class="btc-logo" />
+      <img src="/assets/img/btc.svg" alt="BTC Logo" class="btc-logo" />
     </div>
-    <h1 class="queue-tracking-title">Queue Tracking</h1>
-    <div class="current-time">{{ currentTime }}</div>
+    <h1 class="queue-tracking-title">Live Queue Status</h1>
+    <p class="queue-tracking-subtitle">Track Your Turn in Real-Time</p>
   </div>
 
   <div *ngIf="loading" class="loading-container">
@@ -13,25 +13,44 @@
 
   <div *ngIf="status && !loading" class="queue-status-card">
     <div class="now-serving-section">
-      <div class="serving-label">Now Serving</div>
-      <div class="serving-number">{{ status.currentServing || 0 }}</div>
-      <div *ngIf="status.windowNumber" class="window-number">
-        Window {{ status.windowNumber }}
+      <div class="now-serving-label">Now Serving</div>
+      <div class="now-serving-number" [class.number-update]="status.currentServing > 0">
+        {{ status.currentServing || 0 }}
+      </div>
+      <div *ngIf="status.windowName || status.windowNumber" class="window-info">
+        <i class="fa fa-window-maximize"></i>
+        <span>Window {{ status.windowName || status.windowNumber }}</span>
       </div>
     </div>
 
-    <div class="stats-row">
+    <div class="queue-stats-grid">
       <div class="stat-item">
-        <div class="stat-value">{{ status.waitingCount }}</div>
+        <div class="stat-number">{{ status.waitingCount || 0 }}</div>
         <div class="stat-label">Waiting</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">{{ status.completedCount }}</div>
+        <div class="stat-number">{{ status.completedCount || 0 }}</div>
         <div class="stat-label">Completed</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">{{ status.totalBookings }}</div>
+        <div class="stat-number">{{ status.totalBookings || 0 }}</div>
         <div class="stat-label">Total</div>
+      </div>
+    </div>
+
+    <div class="last-updated">
+      <div class="last-updated-label">Last Updated</div>
+      <div class="last-updated-time">{{ currentTime }}</div>
+    </div>
+
+    <div class="queue-info">
+      <div class="info-item">
+        <i class="fa fa-clock"></i>
+        <span>{{ currentTime }}</span>
+      </div>
+      <div class="info-item" [class.status-active]="status.isActive">
+        <i class="fa fa-circle"></i>
+        <span>{{ status.isActive ? 'Active' : 'Inactive' }}</span>
       </div>
     </div>
   </div>

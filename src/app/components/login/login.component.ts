@@ -38,13 +38,8 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: () => {
         this.loading = false;
-        // Redirect to admin panel
-        const user = this.authService.getCurrentUser();
-        if (user?.role === 'Admin' || user?.role === 'admin') {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/admin']);
-        }
+        // Redirect to admin panel - bookings tab
+        this.router.navigate(['/bookings']);
       },
       error: (err) => {
         this.error = err.error?.error || 'Invalid email or password';

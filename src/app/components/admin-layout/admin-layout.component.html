@@ -47,11 +47,7 @@
   </div>
 
   <div class="admin-content">
-    <app-bookings-tab *ngIf="activeTab === 'bookings'"></app-bookings-tab>
-    <app-tracking-tab *ngIf="activeTab === 'tracking'"></app-tracking-tab>
-    <app-select-window-tab *ngIf="activeTab === 'select-window'"></app-select-window-tab>
-    <app-windows-tab *ngIf="activeTab === 'windows'"></app-windows-tab>
-    <app-dashboard-tab *ngIf="activeTab === 'dashboard' && authService.isAdmin()"></app-dashboard-tab>
+    <router-outlet></router-outlet>
   </div>
 </div>
 
