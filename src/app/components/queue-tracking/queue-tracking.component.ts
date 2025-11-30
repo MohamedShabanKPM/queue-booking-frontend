@@ -5,11 +5,12 @@ import { QueueStatusDto } from '../../models/queue-status.model';
 import { Subscription } from 'rxjs';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { I18nService } from '../../services/i18n.service';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-queue-tracking',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, LanguageSwitcherComponent],
   templateUrl: './queue-tracking.component.html',
   styleUrls: ['./queue-tracking.component.css']
 })

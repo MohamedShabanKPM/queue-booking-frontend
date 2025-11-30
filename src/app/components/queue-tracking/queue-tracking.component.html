@@ -1,4 +1,9 @@
 <div class="queue-tracking-container" [class.loaded]="!loading && status">
+  <!-- Language Switcher -->
+  <div class="tracking-language-switcher">
+    <app-language-switcher></app-language-switcher>
+  </div>
+
   <div *ngIf="loading" class="loading-container">
     <div class="loading"></div>
   </div>

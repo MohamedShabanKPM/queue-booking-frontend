@@ -11,6 +11,25 @@
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.6s ease;
+  position: relative;
+}
+
+.tracking-language-switcher {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 10;
+}
+
+.tracking-language-switcher ::ng-deep .lang-btn {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tracking-language-switcher ::ng-deep .lang-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
 }
 
 .queue-tracking-container.loaded {
@@ -23,7 +42,6 @@
   margin-bottom: 2rem;
   flex-shrink: 0;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid rgba(212, 175, 55, 0.2);
 }
 
 .btc-logo-container {
@@ -176,7 +194,7 @@
   border-radius: 15px;
   border: 2px solid rgba(212, 175, 55, 0.2);
   min-width: 200px;
-  flex: 1;
+  /* flex: 1; */
 }
 
 .stat-number {
@@ -225,7 +243,6 @@
   align-items: center;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 2px solid rgba(212, 175, 55, 0.2);
   flex-shrink: 0;
 }
 
@@ -275,6 +292,11 @@
 @media (max-width: 768px) {
   .queue-tracking-container {
     padding: 1rem;
+  }
+
+  .tracking-language-switcher {
+    top: 1rem;
+    right: 1rem;
   }
   
   .queue-status-card {
