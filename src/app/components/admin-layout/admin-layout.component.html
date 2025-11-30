@@ -3,11 +3,11 @@
     <div class="header-content">
       <div class="logo-section">
         <img src="/assets/img/btc.svg" alt="BTC Logo" class="header-logo" />
-        <h1>{{ 'app.title' | translate }}</h1>
+        <h1>{{ 'nav.bookings' | translate }}</h1>
       </div>
       <div class="user-section">
-        <span class="user-name">{{ authService.getCurrentUser()?.name }}</span>
         <app-language-switcher></app-language-switcher>
+        <span class="user-name">{{ authService.getCurrentUser()?.name }}</span>
         <button class="btn-logout" (click)="logout()">{{ 'nav.logout' | translate }}</button>
       </div>
     </div>

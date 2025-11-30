@@ -11,20 +11,40 @@ import { DashboardTabComponent } from './components/dashboard-tab/dashboard-tab.
 import { authGuard, adminGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  { path: '', component: BookingFormComponent }, // Default route to booking form
   { path: 'booking', component: BookingFormComponent },
   { path: 'tracking', component: QueueTrackingComponent }, // Public tracking route
   { path: 'login', component: LoginComponent },
   { 
-    path: '', 
+    path: 'bookings', 
     component: AdminLayoutComponent, 
     canActivate: [authGuard],
     children: [
-      { path: '', component: BookingsTabComponent }, // Default to bookings
-      { path: 'bookings', component: BookingsTabComponent },
-      { path: 'tracking', component: TrackingTabComponent },
-      { path: 'select-window', component: SelectWindowTabComponent },
-      { path: 'windows', component: WindowsTabComponent },
-      { path: 'dashboard', component: DashboardTabComponent, canActivate: [adminGuard] }
+      { path: '', component: BookingsTabComponent } // Bookings list
+    ]
+  },
+  { 
+    path: 'select-window', 
+    component: AdminLayoutComponent, 
+    canActivate: [authGuard],
+    children: [
+      { path: '', component: SelectWindowTabComponent }
+    ]
+  },
+  { 
+    path: 'windows', 
+    component: AdminLayoutComponent, 
+    canActivate: [authGuard],
+    children: [
+      { path: '', component: WindowsTabComponent }
+    ]
+  },
+  { 
+    path: 'dashboard', 
+    component: AdminLayoutComponent, 
+    canActivate: [authGuard, adminGuard],
+    children: [
+      { path: '', component: DashboardTabComponent }
     ]
   },
   { path: '**', redirectTo: '' }

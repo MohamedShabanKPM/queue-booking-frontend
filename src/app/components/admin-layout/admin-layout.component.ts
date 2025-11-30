@@ -41,15 +41,15 @@ export class AdminLayoutComponent implements OnInit {
 
   updateActiveTab() {
     const url = this.router.url;
-    if (url.includes('/bookings')) {
+    if (url === '/bookings' || url === '/bookings/') {
       this.activeTab = 'bookings';
-    } else if (url.includes('/tracking')) {
+    } else if (url === '/tracking' || url.includes('/tracking')) {
       this.activeTab = 'tracking';
-    } else if (url.includes('/select-window')) {
+    } else if (url === '/select-window' || url === '/select-window/') {
       this.activeTab = 'select-window';
-    } else if (url.includes('/windows')) {
+    } else if (url === '/windows' || url === '/windows/') {
       this.activeTab = 'windows';
-    } else if (url.includes('/dashboard')) {
+    } else if (url === '/dashboard' || url === '/dashboard/') {
       this.activeTab = 'dashboard';
     }
   }
@@ -59,9 +59,14 @@ export class AdminLayoutComponent implements OnInit {
     if (tab === 'dashboard' && !this.authService.isAdmin()) {
       return;
     }
-    // Map tracking tab to tracking route to avoid conflict with public tracking
-    const route = tab === 'tracking' ? 'tracking' : tab;
-    this.router.navigate([`/${route}`]);
+    // Navigate to tracking page directly (public route)
+    if (tab === 'tracking') {
+      this.router.navigate(['/tracking']);
+    } else if (tab === 'bookings') {
+      this.router.navigate(['/bookings']);
+    } else {
+      this.router.navigate([`/${tab}`]);
+    }
   }
 
   logout() {

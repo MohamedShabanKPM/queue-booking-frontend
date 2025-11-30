@@ -38,7 +38,7 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: () => {
         this.loading = false;
-        // Redirect to admin panel - bookings tab
+        // Redirect to bookings list
         this.router.navigate(['/bookings']);
       },
       error: (err) => {
