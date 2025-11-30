@@ -2,70 +2,70 @@
   <div class="queue-popup-dialog" (click)="$event.stopPropagation()">
     <div class="queue-popup-header">
       <h2 class="queue-popup-title">
-        <i class="fa fa-ticket"></i> {{ title }}
+        <i class="fas fa-ticket-alt"></i> {{ title }}
       </h2>
       <button class="queue-popup-close" (click)="onClose()">
-        <i class="fa fa-times"></i>
+        <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="queue-popup-body">
       <div class="popup-title-section">
         <h3>
-          <i class="fa fa-ticket"></i> Reservation #{{ data.queueNumber }}
+          <i class="fas fa-ticket-alt"></i> {{ 'details.title' | translate }} #{{ data.queueNumber }}
         </h3>
       </div>
       
       <div class="popup-form-groups">
         <div class="form-group-section">
-          <h4>Customer Information</h4>
+          <h4>{{ 'customer.title' | translate }}</h4>
           <div class="form-group">
-            <label class="form-label">Name:</label>
+            <label class="form-label">{{ 'customer.name' | translate }}:</label>
             <span class="form-value">{{ data.name || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Phone:</label>
+            <label class="form-label">{{ 'customer.phone' | translate }}:</label>
             <span class="form-value">{{ data.phone || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Email:</label>
+            <label class="form-label">{{ 'customer.email' | translate }}:</label>
             <span class="form-value">{{ data.email || '-' }}</span>
           </div>
         </div>
         
         <div class="form-group-section">
-          <h4>Booking Details</h4>
+          <h4>{{ 'details.title' | translate }}</h4>
           <div class="form-group">
-            <label class="form-label">Queue #:</label>
+            <label class="form-label">{{ 'details.queueNumber' | translate }}:</label>
             <span class="form-value">#{{ data.queueNumber }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Status:</label>
+            <label class="form-label">{{ 'details.status' | translate }}:</label>
             <span [class]="'status-badge ' + getStatusClass(data.status)">
-              {{ data.status }}
+              {{ getStatusTranslation(data.status) }}
             </span>
           </div>
           <div class="form-group">
-            <label class="form-label">Window:</label>
-            <span class="form-value">{{ data.windowName || (data.windowNumber ? 'Window ' + data.windowNumber : '-') }}</span>
+            <label class="form-label">{{ 'details.window' | translate }}:</label>
+            <span class="form-value">{{ data.windowName || (data.windowNumber ? ('booking.window' | translate) + ' ' + data.windowNumber : '-') }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Date:</label>
+            <label class="form-label">{{ 'details.date' | translate }}:</label>
             <span class="form-value">{{ data.bookingDate ? (data.bookingDate | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Started By:</label>
+            <label class="form-label">{{ 'details.startedBy' | translate }}:</label>
             <span class="form-value">{{ data.startedByName || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Start Time:</label>
+            <label class="form-label">{{ 'details.startTime' | translate }}:</label>
             <span class="form-value">{{ data.actualStartTime ? (data.actualStartTime | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">End Time:</label>
+            <label class="form-label">{{ 'details.endTime' | translate }}:</label>
             <span class="form-value">{{ data.actualEndTime ? (data.actualEndTime | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Time Taken:</label>
+            <label class="form-label">{{ 'details.timeTaken' | translate }}:</label>
             <span class="form-value">{{ data.timeTaken || '-' }}</span>
           </div>
         </div>

@@ -8,11 +8,13 @@ import { QueueListComponent, QueueListColumn, QueueListButton } from '../queue-l
 import { QueuePopupComponent } from '../queue-popup/queue-popup.component';
 import { QueueFormField, QueueFormButton, QueueStatusBar } from '../queue-form/queue-form.component';
 import { VoiceService } from '../../services/voice.service';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-bookings-tab',
   standalone: true,
-  imports: [CommonModule, FormsModule, QueueListComponent, QueuePopupComponent],
+  imports: [CommonModule, FormsModule, QueueListComponent, QueuePopupComponent, TranslatePipe],
   templateUrl: './bookings-tab.component.html',
   styleUrls: ['./bookings-tab.component.css']
 })
@@ -34,34 +36,17 @@ export class BookingsTabComponent implements OnInit {
   showPopup: boolean = false;
   selectedBooking: BookingResponseDto | null = null;
 
-  // Queue List columns
-  listColumns: QueueListColumn[] = [
-    { name: 'queue_number', label: 'Queue #', type: 'number' },
-    { name: 'name', label: 'Name', type: 'text' },
-    { name: 'phone', label: 'Phone', type: 'text' },
-    { name: 'windowName', label: 'Window', type: 'text' },
-    { name: 'status', label: 'Status', type: 'status' },
-    { name: 'actualStartTime', label: 'Start Time', type: 'date' },
-    { name: 'actualEndTime', label: 'End Time', type: 'date' },
-    { name: 'timeTaken', label: 'Time Taken', type: 'text' },
-    { name: 'startedByName', label: 'Started By', type: 'text' }
-  ];
+  // Queue List columns - will be initialized in ngOnInit
+  listColumns: QueueListColumn[] = [];
 
-  // Header buttons
-  headerButtons: QueueListButton[] = [
-    {
-      label: 'Get Next Waiting',
-      icon: 'fa fa-forward',
-      class: 'btn-primary',
-      action: () => this.getNextWaiting()
-    }
-  ];
+  // Header buttons - will be initialized in ngOnInit
+  headerButtons: QueueListButton[] = [];
 
   // Row buttons
   rowButtons: QueueListButton[] = [
     {
       label: 'Start',
-      icon: 'fa fa-play',
+      icon: 'fas fa-play',
       class: 'btn-link',
       action: (row) => this.startProcessing(row),
       visible: (row) => row.status === 'waiting'
@@ -76,10 +61,14 @@ export class BookingsTabComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private authService: AuthService,
-    private voiceService: VoiceService
+    private voiceService: VoiceService,
+    public i18n: I18nService
   ) { }
 
   ngOnInit() {
+    // Initialize translations
+    this.initializeTranslations();
+    
     // Initialize date components
     this.initializeDateInputs();
     
@@ -95,6 +84,34 @@ export class BookingsTabComponent implements OnInit {
         this.loadBookings();
       }
     }, 60000); // Check every minute
+    
+    // Update translations when language changes
+    this.i18n.currentLanguage$.subscribe(() => {
+      this.initializeTranslations();
+    });
+  }
+
+  initializeTranslations() {
+    this.listColumns = [
+      { name: 'queue_number', label: this.i18n.translate('booking.queueNumber'), type: 'number' },
+      { name: 'name', label: this.i18n.translate('booking.name'), type: 'text' },
+      { name: 'phone', label: this.i18n.translate('booking.phone'), type: 'text' },
+      { name: 'windowName', label: this.i18n.translate('booking.window'), type: 'text' },
+      { name: 'status', label: this.i18n.translate('booking.status'), type: 'status' },
+      { name: 'actualStartTime', label: this.i18n.translate('booking.startTime'), type: 'date' },
+      { name: 'actualEndTime', label: this.i18n.translate('booking.endTime'), type: 'date' },
+      { name: 'timeTaken', label: this.i18n.translate('booking.timeTaken'), type: 'text' },
+      { name: 'startedByName', label: this.i18n.translate('booking.startedBy'), type: 'text' }
+    ];
+
+    this.headerButtons = [
+      {
+        label: this.i18n.translate('booking.getNextWaiting'),
+        icon: 'fas fa-forward',
+        class: 'btn-primary',
+        action: () => this.getNextWaiting()
+      }
+    ];
   }
 
   initializeDateInputs() {
@@ -186,14 +203,14 @@ export class BookingsTabComponent implements OnInit {
       this.popupButtons.push({
         label: 'Start Processing',
         class: 'btn-success',
-        icon: 'fa fa-play',
+        icon: 'fas fa-play',
         action: () => this.startProcessing(booking),
         visible: true
       });
       this.popupButtons.push({
         label: 'Cancel',
         class: 'btn-danger',
-        icon: 'fa fa-times',
+        icon: 'fas fa-times',
         action: () => this.cancelBooking(booking),
         visible: true
       });
@@ -201,21 +218,21 @@ export class BookingsTabComponent implements OnInit {
       this.popupButtons.push({
         label: 'Complete',
         class: 'btn-success',
-        icon: 'fa fa-check',
+        icon: 'fas fa-check',
         action: () => this.completeBooking(booking),
         visible: true
       });
       this.popupButtons.push({
         label: 'Recall',
         class: 'btn-info',
-        icon: 'fa fa-bullhorn',
+        icon: 'fas fa-bullhorn',
         action: () => this.recallReservation(booking),
         visible: true
       });
       this.popupButtons.push({
         label: 'Cancel',
         class: 'btn-danger',
-        icon: 'fa fa-times',
+        icon: 'fas fa-times',
         action: () => this.cancelBooking(booking),
         visible: true
       });
@@ -223,7 +240,7 @@ export class BookingsTabComponent implements OnInit {
       this.popupButtons.push({
         label: 'Next Reservation',
         class: 'btn-primary',
-        icon: 'fa fa-arrow-right',
+        icon: 'fas fa-arrow-right',
         action: () => this.getNextWaiting(),
         visible: true
       });

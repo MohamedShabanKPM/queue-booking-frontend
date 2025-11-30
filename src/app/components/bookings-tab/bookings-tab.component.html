@@ -1,35 +1,35 @@
 <div class="tab-content">
   <div class="tab-header">
-    <h2>All Bookings</h2>
+    <h2>{{ 'nav.bookings' | translate }}</h2>
     <div class="filters">
       <div class="filter-group">
-        <label>Date:</label>
+        <label>{{ 'filter.date' | translate }}:</label>
         <div class="date-input-group">
           <select [(ngModel)]="selectedDay" (change)="onDateChange()" class="form-control date-select">
-            <option [value]="null">Day</option>
+            <option [value]="null">{{ 'common.day' | translate }}</option>
             <option *ngFor="let day of days" [value]="day">{{ day }}</option>
           </select>
           <select [(ngModel)]="selectedMonth" (change)="onDateChange()" class="form-control date-select">
-            <option [value]="null">Month</option>
+            <option [value]="null">{{ 'common.month' | translate }}</option>
             <option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</option>
           </select>
           <select [(ngModel)]="selectedYear" (change)="onDateChange()" class="form-control date-select">
-            <option [value]="null">Year</option>
+            <option [value]="null">{{ 'common.year' | translate }}</option>
             <option *ngFor="let year of years" [value]="year">{{ year }}</option>
           </select>
         </div>
         <button class="btn btn-secondary btn-today" (click)="setToday()" style="margin-top: 5px;">
-          <i class="fa fa-calendar-day"></i> Today
+          <i class="fas fa-calendar-day"></i> {{ 'common.today' | translate }}
         </button>
       </div>
       <div class="filter-group">
-        <label>Status:</label>
+        <label>{{ 'filter.status' | translate }}:</label>
         <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="form-control">
-          <option value="">All</option>
-          <option value="waiting">Waiting</option>
-          <option value="in_progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="">{{ 'filter.all' | translate }}</option>
+          <option value="waiting">{{ 'booking.waiting' | translate }}</option>
+          <option value="in_progress">{{ 'booking.inProgress' | translate }}</option>
+          <option value="completed">{{ 'booking.completed' | translate }}</option>
+          <option value="cancelled">{{ 'booking.cancelled' | translate }}</option>
         </select>
       </div>
     </div>
@@ -54,7 +54,7 @@
   <app-queue-popup
     *ngIf="selectedBooking"
     [visible]="showPopup"
-    [title]="'Reservation Details'"
+    [title]="'details.title' | translate"
     [data]="selectedBooking"
     [fields]="popupFields"
     [buttons]="popupButtons"

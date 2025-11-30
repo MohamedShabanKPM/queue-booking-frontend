@@ -23,7 +23,7 @@
     <div class="queue-popup-dialog" (click)="$event.stopPropagation()">
       <div class="queue-popup-header">
         <h2 class="queue-popup-title">
-          <i class="fa fa-window-maximize"></i> {{ editingWindow ? 'Edit Window' : 'Create New Window' }}
+          <i class="fas fa-window-maximize"></i> {{ editingWindow ? 'Edit Window' : 'Create New Window' }}
         </h2>
       </div>
       <div class="queue-popup-body">
@@ -56,10 +56,10 @@
           </div>
           <div class="popup-buttons">
             <button type="submit" class="btn btn-success">
-              <i class="fa fa-check"></i> {{ editingWindow ? 'Update' : 'Create' }}
+              <i class="fas fa-check"></i> {{ editingWindow ? 'Update' : 'Create' }}
             </button>
             <button type="button" class="btn btn-danger" (click)="closeForm()">
-              <i class="fa fa-times"></i> Cancel
+              <i class="fas fa-times"></i> Cancel
             </button>
           </div>
         </form>

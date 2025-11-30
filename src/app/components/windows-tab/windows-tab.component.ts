@@ -51,7 +51,7 @@ export class WindowsTabComponent implements OnInit {
   headerButtons: QueueListButton[] = [
     {
       label: 'Create',
-      icon: 'fa fa-plus',
+      icon: 'fas fa-plus',
       class: 'btn-primary',
       action: () => this.openCreateForm()
     }
@@ -61,7 +61,7 @@ export class WindowsTabComponent implements OnInit {
   rowButtons: QueueListButton[] = [
     {
       label: 'Edit',
-      icon: 'fa fa-edit',
+      icon: 'fas fa-edit',
       class: 'btn-link',
       action: (row) => this.editWindow(row),
       visible: () => true

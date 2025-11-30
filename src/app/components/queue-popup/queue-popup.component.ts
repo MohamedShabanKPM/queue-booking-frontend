@@ -2,11 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { QueueFormComponent, QueueFormField, QueueFormButton } from '../queue-form/queue-form.component';
 import type { QueueStatusBar } from '../queue-form/queue-form.component';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-queue-popup',
   standalone: true,
-  imports: [CommonModule, QueueFormComponent, DatePipe],
+  imports: [CommonModule, QueueFormComponent, DatePipe, TranslatePipe],
   templateUrl: './queue-popup.component.html',
   styleUrls: ['./queue-popup.component.css']
 })
@@ -48,5 +50,17 @@ export class QueuePopupComponent {
   getStateIndex(state: string): number {
     if (!this.statusBar) return -1;
     return this.statusBar.states.indexOf(state);
+  }
+
+  constructor(private i18n: I18nService) {}
+
+  getStatusTranslation(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'waiting': this.i18n.translate('booking.waiting'),
+      'in_progress': this.i18n.translate('booking.inProgress'),
+      'completed': this.i18n.translate('booking.completed'),
+      'cancelled': this.i18n.translate('booking.cancelled')
+    };
+    return statusMap[status] || status;
   }
 }

@@ -1,5 +1,34 @@
 /* Queue Booking System - Original Design Styles */
 
+/* Font Awesome Icons Support */
+.fa, .fas, .far, .fal, .fab, .fa-solid, .fa-regular, .fa-light, .fa-brands {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "Font Awesome 6 Brands" !important;
+  font-weight: 900;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-solid, .fas {
+  font-weight: 900;
+}
+
+.fa-regular, .far {
+  font-weight: 400;
+}
+
+.fa-light, .fal {
+  font-weight: 300;
+}
+
+.fa-brands, .fab {
+  font-family: "Font Awesome 6 Brands" !important;
+  font-weight: 400;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +38,23 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Arabic Font Support */
+[dir="rtl"] body,
+[dir="rtl"] * {
+  font-family: 'Segoe UI', 'Arial', 'Tahoma', sans-serif;
 }
 
 /* Queue Booking Container */

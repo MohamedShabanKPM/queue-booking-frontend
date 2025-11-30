@@ -3,11 +3,12 @@
     <div class="header-content">
       <div class="logo-section">
         <img src="/assets/img/btc.svg" alt="BTC Logo" class="header-logo" />
-        <h1>Queue Management System</h1>
+        <h1>{{ 'app.title' | translate }}</h1>
       </div>
       <div class="user-section">
+        <app-language-switcher></app-language-switcher>
         <span class="user-name">{{ authService.getCurrentUser()?.name }}</span>
-        <button class="btn-logout" (click)="logout()">Logout</button>
+        <button class="btn-logout" (click)="logout()">{{ 'nav.logout' | translate }}</button>
       </div>
     </div>
   </div>
@@ -17,32 +18,32 @@
       class="tab-button" 
       [class.active]="activeTab === 'bookings'"
       (click)="setActiveTab('bookings')">
-      📋 Bookings
+       {{ 'nav.bookings' | translate }}
     </button>
     <button 
       class="tab-button" 
       [class.active]="activeTab === 'tracking'"
       (click)="setActiveTab('tracking')">
-      📊 Queue Tracking
+       {{ 'nav.tracking' | translate }}
     </button>
     <button 
       class="tab-button" 
       [class.active]="activeTab === 'select-window'"
       (click)="setActiveTab('select-window')">
-      🪟 Select Window
+       {{ 'nav.selectWindow' | translate }}
     </button>
     <button 
       class="tab-button" 
       [class.active]="activeTab === 'windows'"
       (click)="setActiveTab('windows')">
-      🏢 Windows
+       {{ 'nav.windows' | translate }}
     </button>
     <button 
       *ngIf="authService.isAdmin()"
       class="tab-button" 
       [class.active]="activeTab === 'dashboard'"
       (click)="setActiveTab('dashboard')">
-      📈 Dashboard
+       {{ 'nav.dashboard' | translate }}
     </button>
   </div>
 

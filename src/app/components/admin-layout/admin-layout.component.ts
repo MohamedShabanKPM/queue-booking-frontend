@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -9,7 +11,9 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [
     CommonModule, 
-    RouterModule
+    RouterModule,
+    LanguageSwitcherComponent,
+    TranslatePipe
   ],
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.css']
