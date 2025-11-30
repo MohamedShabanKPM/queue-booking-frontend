@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { I18nService } from '../../services/i18n.service';
 
 export interface QueueListColumn {
   name: string;
@@ -32,6 +33,8 @@ export class QueueListComponent {
   @Input() getRowDecoration?: (row: any) => string;
   @Output() rowClick = new EventEmitter<any>();
 
+  constructor(private i18n: I18nService) {}
+
   onRowClick(row: any) {
     this.rowClick.emit(row);
   }
@@ -50,9 +53,22 @@ export class QueueListComponent {
     if (column.format) {
       return column.format(value);
     }
+    if (column.type === 'status' && value) {
+      return this.getStatusTranslation(value);
+    }
     if (column.type === 'date' && value) {
       return new Date(value).toLocaleString();
     }
     return value?.toString() || '';
+  }
+
+  getStatusTranslation(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'waiting': this.i18n.translate('booking.waiting'),
+      'in_progress': this.i18n.translate('booking.inProgress'),
+      'completed': this.i18n.translate('booking.completed'),
+      'cancelled': this.i18n.translate('booking.cancelled')
+    };
+    return statusMap[status] || status;
   }
 }

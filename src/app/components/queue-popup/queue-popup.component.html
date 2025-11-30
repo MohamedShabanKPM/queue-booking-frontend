@@ -73,16 +73,16 @@
       
       <!-- Status Bar and Buttons -->
       <div *ngIf="statusBar" class="popup-statusbar">
-        <div class="queue-statusbar">
+        <!-- <div class="queue-statusbar">
           <div class="statusbar-states">
             <span
               *ngFor="let state of statusBar.states"
               [class]="'statusbar-state ' + (state === statusBar.currentState ? 'active' : '')"
               [class.completed]="getStateIndex(state) < getStateIndex(statusBar.currentState)">
-              {{ state }}
+              {{ getStatusTranslation(state) }}
             </span>
           </div>
-        </div>
+        </div> -->
         <div class="popup-buttons">
           @for (btn of buttons; track btn) {
             @if (btn.visible !== false) {

@@ -56,31 +56,40 @@
   cursor: pointer;
 }
 
-/* Row Decorations */
-.queue-list-table tbody tr[class*="decoration-info"] {
-  background-color: #d1ecf1;
+/* Row Decorations - Text Colors Only */
+.queue-list-table tbody tr[class*="decoration-info-text"] td {
+  color: #0c5460;
 }
 
-.queue-list-table tbody tr[class*="decoration-info"]:hover {
-  background-color: #bee5eb;
+.queue-list-table tbody tr[class*="decoration-info-text"]:hover td {
+  color: #0a4550;
 }
 
-.queue-list-table tbody tr[class*="decoration-success"] {
-  background-color: #d4edda;
+.queue-list-table tbody tr[class*="decoration-success-text"] td {
+  color: #155724;
 }
 
-.queue-list-table tbody tr[class*="decoration-success"]:hover {
-  background-color: #c3e6cb;
+.queue-list-table tbody tr[class*="decoration-success-text"]:hover td {
+  color: #0f3d16;
 }
 
-.queue-list-table tbody tr[class*="decoration-warning"] {
-  background-color: #fff3cd;
+.queue-list-table tbody tr[class*="decoration-warning-text"] td {
+  color: #856404;
 }
 
-.queue-list-table tbody tr[class*="decoration-warning"]:hover {
-  background-color: #ffeaa7;
+.queue-list-table tbody tr[class*="decoration-warning-text"]:hover td {
+  color: #6b5203;
 }
 
+.queue-list-table tbody tr[class*="decoration-danger-text"] td {
+  color: #dc3545;
+}
+
+.queue-list-table tbody tr[class*="decoration-danger-text"]:hover td {
+  color: #c82333;
+}
+
+/* Keep old decoration classes for backward compatibility (windows tab) */
 .queue-list-table tbody tr[class*="decoration-muted"] {
   background-color: #e9ecef;
   color: #6c757d;
@@ -143,8 +152,8 @@
 }
 
 .status-badge.status-cancelled {
-  background-color: #e9ecef;
-  color: #6c757d;
+  background-color: #f8d7da;
+  color: #dc3545;
 }
 
 .btn {

@@ -42,16 +42,8 @@ export class BookingsTabComponent implements OnInit {
   // Header buttons - will be initialized in ngOnInit
   headerButtons: QueueListButton[] = [];
 
-  // Row buttons
-  rowButtons: QueueListButton[] = [
-    {
-      label: 'Start',
-      icon: 'fas fa-play',
-      class: 'btn-link',
-      action: (row) => this.startProcessing(row),
-      visible: (row) => row.status === 'waiting'
-    }
-  ];
+  // Row buttons - will be initialized in ngOnInit
+  rowButtons: QueueListButton[] = [];
 
   // Popup form fields
   popupFields: QueueFormField[] = [];
@@ -110,6 +102,16 @@ export class BookingsTabComponent implements OnInit {
         icon: 'fas fa-forward',
         class: 'btn-primary',
         action: () => this.getNextWaiting()
+      }
+    ];
+
+    this.rowButtons = [
+      {
+        label: this.i18n.translate('booking.startProcessing'),
+        icon: 'fas fa-play',
+        class: 'btn-link',
+        action: (row) => this.startProcessing(row),
+        visible: (row) => row.status === 'waiting'
       }
     ];
   }
@@ -179,10 +181,10 @@ export class BookingsTabComponent implements OnInit {
 
   getRowDecoration(row: any): string {
     const status = row.status;
-    if (status === 'waiting') return 'decoration-info';
-    if (status === 'completed') return 'decoration-success';
-    if (status === 'in_progress') return 'decoration-warning';
-    if (status === 'cancelled') return 'decoration-muted';
+    if (status === 'waiting') return 'decoration-info-text';
+    if (status === 'completed') return 'decoration-success-text';
+    if (status === 'in_progress') return 'decoration-warning-text';
+    if (status === 'cancelled') return 'decoration-danger-text';
     return '';
   }
 
@@ -201,14 +203,21 @@ export class BookingsTabComponent implements OnInit {
     this.popupButtons = [];
     if (booking.status === 'waiting') {
       this.popupButtons.push({
-        label: 'Start Processing',
+        label: this.i18n.translate('booking.startProcessing'),
         class: 'btn-success',
         icon: 'fas fa-play',
         action: () => this.startProcessing(booking),
         visible: true
       });
       this.popupButtons.push({
-        label: 'Cancel',
+        label: this.i18n.translate('booking.recall'),
+        class: 'btn-info',
+        icon: 'fas fa-bullhorn',
+        action: () => this.recallReservation(booking),
+        visible: true
+      });
+      this.popupButtons.push({
+        label: this.i18n.translate('booking.cancel'),
         class: 'btn-danger',
         icon: 'fas fa-times',
         action: () => this.cancelBooking(booking),
@@ -216,21 +225,14 @@ export class BookingsTabComponent implements OnInit {
       });
     } else if (booking.status === 'in_progress') {
       this.popupButtons.push({
-        label: 'Complete',
+        label: this.i18n.translate('booking.complete'),
         class: 'btn-success',
         icon: 'fas fa-check',
         action: () => this.completeBooking(booking),
         visible: true
       });
       this.popupButtons.push({
-        label: 'Recall',
-        class: 'btn-info',
-        icon: 'fas fa-bullhorn',
-        action: () => this.recallReservation(booking),
-        visible: true
-      });
-      this.popupButtons.push({
-        label: 'Cancel',
+        label: this.i18n.translate('booking.cancel'),
         class: 'btn-danger',
         icon: 'fas fa-times',
         action: () => this.cancelBooking(booking),
@@ -238,7 +240,7 @@ export class BookingsTabComponent implements OnInit {
       });
     } else if (booking.status === 'completed') {
       this.popupButtons.push({
-        label: 'Next Reservation',
+        label: this.i18n.translate('booking.nextReservation'),
         class: 'btn-primary',
         icon: 'fas fa-arrow-right',
         action: () => this.getNextWaiting(),
