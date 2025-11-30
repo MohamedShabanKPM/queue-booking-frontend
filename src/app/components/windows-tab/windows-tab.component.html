@@ -25,9 +25,6 @@
         <h2 class="queue-popup-title">
           <i class="fa fa-window-maximize"></i> {{ editingWindow ? 'Edit Window' : 'Create New Window' }}
         </h2>
-        <button class="queue-popup-close" (click)="closeForm()">
-          <i class="fa fa-times"></i>
-        </button>
       </div>
       <div class="queue-popup-body">
         <form (ngSubmit)="saveWindow()">
@@ -58,11 +55,11 @@
             </select>
           </div>
           <div class="popup-buttons">
-            <button type="submit" class="btn btn-primary">
-              {{ editingWindow ? 'Update' : 'Create' }}
+            <button type="submit" class="btn btn-success">
+              <i class="fa fa-check"></i> {{ editingWindow ? 'Update' : 'Create' }}
             </button>
-            <button type="button" class="btn btn-secondary" (click)="closeForm()">
-              Cancel
+            <button type="button" class="btn btn-danger" (click)="closeForm()">
+              <i class="fa fa-times"></i> Cancel
             </button>
           </div>
         </form>

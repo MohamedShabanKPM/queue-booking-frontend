@@ -92,3 +92,30 @@
   padding: 3rem;
 }
 
+.btn-today {
+  width: 120px;
+  justify-content: center;
+  background: linear-gradient(135deg, #6c757d 0%, #868e96 50%, #545b62 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.4) !important;
+  border: 1px solid rgba(108, 117, 125, 0.3) !important;
+}
+
+.btn-today:hover {
+  background: linear-gradient(135deg, #868e96 0%, #6c757d 50%, #868e96 100%) !important;
+  box-shadow: 0 4px 16px rgba(108, 117, 125, 0.6) !important;
+  border-color: rgba(108, 117, 125, 0.5) !important;
+}
+
+.date-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.date-select {
+  min-width: 100px;
+  flex: 1;
+  max-width: 120px;
+}
+

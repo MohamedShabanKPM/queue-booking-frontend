@@ -22,6 +22,14 @@ export class BookingsTabComponent implements OnInit {
   selectedStatus: string = '';
   selectedDate: string = this.getTodayDateString();
   
+  // Date input components
+  selectedDay: number | null = null;
+  selectedMonth: number | null = null;
+  selectedYear: number | null = null;
+  days: number[] = [];
+  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  years: number[] = [];
+  
   // Popup state
   showPopup: boolean = false;
   selectedBooking: BookingResponseDto | null = null;
@@ -72,18 +80,42 @@ export class BookingsTabComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Initialize date components
+    this.initializeDateInputs();
+    
     // Set today's date by default
-    this.selectedDate = this.getTodayDateString();
+    this.setToday();
     this.loadBookings();
     
     // Check if date changed (new day) every minute
     setInterval(() => {
       const today = this.getTodayDateString();
       if (today !== this.selectedDate && !this.selectedDate) {
-        this.selectedDate = today;
+        this.setToday();
         this.loadBookings();
       }
     }, 60000); // Check every minute
+  }
+
+  initializeDateInputs() {
+    // Generate days (1-31)
+    this.days = Array.from({ length: 31 }, (_, i) => i + 1);
+    
+    // Generate years (current year - 2 to current year + 2)
+    const currentYear = new Date().getFullYear();
+    this.years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
+  }
+
+  onDateChange() {
+    if (this.selectedDay && this.selectedMonth && this.selectedYear) {
+      const month = String(this.selectedMonth).padStart(2, '0');
+      const day = String(this.selectedDay).padStart(2, '0');
+      this.selectedDate = `${this.selectedYear}-${month}-${day}`;
+      this.onFilterChange();
+    } else {
+      this.selectedDate = '';
+      this.onFilterChange();
+    }
   }
 
   getTodayDateString(): string {
@@ -116,8 +148,12 @@ export class BookingsTabComponent implements OnInit {
   }
 
   setToday() {
+    const today = new Date();
+    this.selectedDay = today.getDate();
+    this.selectedMonth = today.getMonth() + 1;
+    this.selectedYear = today.getFullYear();
     this.selectedDate = this.getTodayDateString();
-    this.loadBookings();
+    this.onFilterChange();
   }
 
   getStatusClass(status: string): string {
@@ -149,13 +185,15 @@ export class BookingsTabComponent implements OnInit {
     if (booking.status === 'waiting') {
       this.popupButtons.push({
         label: 'Start Processing',
-        class: 'btn-primary',
+        class: 'btn-success',
+        icon: 'fa fa-play',
         action: () => this.startProcessing(booking),
         visible: true
       });
       this.popupButtons.push({
         label: 'Cancel',
-        class: 'btn-warning',
+        class: 'btn-danger',
+        icon: 'fa fa-times',
         action: () => this.cancelBooking(booking),
         visible: true
       });
@@ -163,6 +201,7 @@ export class BookingsTabComponent implements OnInit {
       this.popupButtons.push({
         label: 'Complete',
         class: 'btn-success',
+        icon: 'fa fa-check',
         action: () => this.completeBooking(booking),
         visible: true
       });
@@ -175,7 +214,8 @@ export class BookingsTabComponent implements OnInit {
       });
       this.popupButtons.push({
         label: 'Cancel',
-        class: 'btn-warning',
+        class: 'btn-danger',
+        icon: 'fa fa-times',
         action: () => this.cancelBooking(booking),
         visible: true
       });
@@ -183,6 +223,7 @@ export class BookingsTabComponent implements OnInit {
       this.popupButtons.push({
         label: 'Next Reservation',
         class: 'btn-primary',
+        icon: 'fa fa-arrow-right',
         action: () => this.getNextWaiting(),
         visible: true
       });

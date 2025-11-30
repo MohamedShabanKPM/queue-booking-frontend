@@ -19,56 +19,54 @@
         <div class="form-group-section">
           <h4>Customer Information</h4>
           <div class="form-group">
-            <label class="form-label">Name</label>
-            <div class="form-control readonly">{{ data.name || '-' }}</div>
+            <label class="form-label">Name:</label>
+            <span class="form-value">{{ data.name || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Phone</label>
-            <div class="form-control readonly">{{ data.phone || '-' }}</div>
+            <label class="form-label">Phone:</label>
+            <span class="form-value">{{ data.phone || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Email</label>
-            <div class="form-control readonly">{{ data.email || '-' }}</div>
+            <label class="form-label">Email:</label>
+            <span class="form-value">{{ data.email || '-' }}</span>
           </div>
         </div>
         
         <div class="form-group-section">
           <h4>Booking Details</h4>
           <div class="form-group">
-            <label class="form-label">Queue Number</label>
-            <div class="form-control readonly">#{{ data.queueNumber }}</div>
+            <label class="form-label">Queue #:</label>
+            <span class="form-value">#{{ data.queueNumber }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Status</label>
-            <div class="statusbar-widget">
-              <span [class]="'status-badge ' + getStatusClass(data.status)">
-                {{ data.status }}
-              </span>
-            </div>
+            <label class="form-label">Status:</label>
+            <span [class]="'status-badge ' + getStatusClass(data.status)">
+              {{ data.status }}
+            </span>
           </div>
           <div class="form-group">
-            <label class="form-label">Window</label>
-            <div class="form-control readonly">{{ data.windowName || (data.windowNumber ? 'Window ' + data.windowNumber : '-') }}</div>
+            <label class="form-label">Window:</label>
+            <span class="form-value">{{ data.windowName || (data.windowNumber ? 'Window ' + data.windowNumber : '-') }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Booking Date</label>
-            <div class="form-control readonly">{{ data.bookingDate ? (data.bookingDate | date:'short') : '-' }}</div>
+            <label class="form-label">Date:</label>
+            <span class="form-value">{{ data.bookingDate ? (data.bookingDate | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Started By</label>
-            <div class="form-control readonly">{{ data.startedByName || '-' }}</div>
+            <label class="form-label">Started By:</label>
+            <span class="form-value">{{ data.startedByName || '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Start Time</label>
-            <div class="form-control readonly">{{ data.actualStartTime ? (data.actualStartTime | date:'short') : '-' }}</div>
+            <label class="form-label">Start Time:</label>
+            <span class="form-value">{{ data.actualStartTime ? (data.actualStartTime | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">End Time</label>
-            <div class="form-control readonly">{{ data.actualEndTime ? (data.actualEndTime | date:'short') : '-' }}</div>
+            <label class="form-label">End Time:</label>
+            <span class="form-value">{{ data.actualEndTime ? (data.actualEndTime | date:'short') : '-' }}</span>
           </div>
           <div class="form-group">
-            <label class="form-label">Time Taken</label>
-            <div class="form-control readonly">{{ data.timeTaken || '-' }}</div>
+            <label class="form-label">Time Taken:</label>
+            <span class="form-value">{{ data.timeTaken || '-' }}</span>
           </div>
         </div>
       </div>
