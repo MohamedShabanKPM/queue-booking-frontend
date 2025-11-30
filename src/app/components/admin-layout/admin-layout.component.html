@@ -6,8 +6,8 @@
         <h1>{{ 'nav.bookings' | translate }}</h1>
       </div>
       <div class="user-section">
-        <app-language-switcher></app-language-switcher>
         <span class="user-name">{{ authService.getCurrentUser()?.name }}</span>
+        <app-language-switcher></app-language-switcher>
         <button class="btn-logout" (click)="logout()">{{ 'nav.logout' | translate }}</button>
       </div>
     </div>
@@ -44,6 +44,13 @@
       [class.active]="activeTab === 'dashboard'"
       (click)="setActiveTab('dashboard')">
        {{ 'nav.dashboard' | translate }}
+    </button>
+    <button 
+      *ngIf="authService.isAdmin()"
+      class="tab-button" 
+      [class.active]="activeTab === 'users'"
+      (click)="setActiveTab('users')">
+       {{ 'nav.users' | translate }}
     </button>
   </div>
 

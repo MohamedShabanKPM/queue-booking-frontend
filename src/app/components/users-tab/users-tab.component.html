@@ -1,0 +1,134 @@
+<div class="tab-content">
+  <div class="tab-header">
+    <h2>{{ 'nav.users' | translate }}</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">
+      <i class="fas fa-plus"></i> {{ 'users.addUser' | translate }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading"></div>
+  </div>
+
+  <div *ngIf="!loading" class="users-table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>{{ 'users.name' | translate }}</th>
+          <th>{{ 'users.email' | translate }}</th>
+          <th>{{ 'users.role' | translate }}</th>
+          <th>{{ 'users.createdAt' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [ngClass]="getRoleClass(user.role)">
+              {{ user.role }}
+            </span>
+          </td>
+          <td>{{ formatDate(user.createdAt) }}</td>
+          <td class="actions-cell">
+            <button class="btn btn-sm btn-edit" (click)="openEditForm(user)">
+              <i class="fas fa-edit"></i> {{ 'common.edit' | translate }}
+            </button>
+            <button class="btn btn-sm btn-delete" (click)="deleteUser(user)">
+              <i class="fas fa-trash"></i> {{ 'common.delete' | translate }}
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="5" class="no-data">{{ 'users.noUsers' | translate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add User Modal -->
+  <div *ngIf="showAddForm" class="modal-overlay" (click)="closeAddForm()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ 'users.addUser' | translate }}</h3>
+        <button class="btn-close" (click)="closeAddForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="createUser()">
+          <div class="form-group">
+            <label>{{ 'users.name' | translate }} *</label>
+            <input type="text" class="form-control" [(ngModel)]="formData.name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.email' | translate }} *</label>
+            <input type="email" class="form-control" [(ngModel)]="formData.email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.password' | translate }} *</label>
+            <input type="password" class="form-control" [(ngModel)]="formData.password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.role' | translate }} *</label>
+            <select class="form-control" [(ngModel)]="formData.role" name="role" required>
+              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeAddForm()">
+              {{ 'common.cancel' | translate }}
+            </button>
+            <button type="submit" class="btn btn-primary">
+              {{ 'users.create' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div *ngIf="showEditForm" class="modal-overlay" (click)="closeEditForm()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ 'users.editUser' | translate }}</h3>
+        <button class="btn-close" (click)="closeEditForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateUser()">
+          <div class="form-group">
+            <label>{{ 'users.name' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="editFormData.name" name="editName">
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.email' | translate }}</label>
+            <input type="email" class="form-control" [(ngModel)]="editFormData.email" name="editEmail">
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.password' | translate }} ({{ 'users.leaveBlank' | translate }})</label>
+            <input type="password" class="form-control" [(ngModel)]="editFormData.password" name="editPassword">
+          </div>
+          <div class="form-group">
+            <label>{{ 'users.role' | translate }}</label>
+            <select class="form-control" [(ngModel)]="editFormData.role" name="editRole">
+              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeEditForm()">
+              {{ 'common.cancel' | translate }}
+            </button>
+            <button type="submit" class="btn btn-primary">
+              {{ 'common.update' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

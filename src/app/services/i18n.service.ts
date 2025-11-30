@@ -35,6 +35,7 @@ export class I18nService {
     'nav.selectWindow': { ar: 'اختر النافذة', en: 'Select Window' },
     'nav.windows': { ar: 'النوافذ', en: 'Windows' },
     'nav.dashboard': { ar: 'لوحة التحكم', en: 'Dashboard' },
+    'nav.users': { ar: 'المستخدمين', en: 'Users' },
     'nav.logout': { ar: 'تسجيل الخروج', en: 'Logout' },
     
     // Booking
@@ -126,7 +127,20 @@ export class I18nService {
     
     // Language
     'language.arabic': { ar: 'العربية', en: 'Arabic' },
-    'language.english': { ar: 'الإنجليزية', en: 'English' }
+    'language.english': { ar: 'الإنجليزية', en: 'English' },
+    
+    // Users
+    'users.addUser': { ar: 'إضافة مستخدم', en: 'Add User' },
+    'users.editUser': { ar: 'تعديل مستخدم', en: 'Edit User' },
+    'users.name': { ar: 'الاسم', en: 'Name' },
+    'users.email': { ar: 'البريد الإلكتروني', en: 'Email' },
+    'users.password': { ar: 'كلمة المرور', en: 'Password' },
+    'users.role': { ar: 'الدور', en: 'Role' },
+    'users.createdAt': { ar: 'تاريخ الإنشاء', en: 'Created At' },
+    'users.create': { ar: 'إنشاء', en: 'Create' },
+    'users.leaveBlank': { ar: 'اتركه فارغاً إذا لم تريد تغييره', en: 'Leave blank to keep unchanged' },
+    'users.noUsers': { ar: 'لا يوجد مستخدمين', en: 'No users found' },
+    'common.actions': { ar: 'الإجراءات', en: 'Actions' }
   };
 
   constructor() {

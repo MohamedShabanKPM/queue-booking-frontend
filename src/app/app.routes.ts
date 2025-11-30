@@ -8,6 +8,7 @@ import { TrackingTabComponent } from './components/tracking-tab/tracking-tab.com
 import { SelectWindowTabComponent } from './components/select-window-tab/select-window-tab.component';
 import { WindowsTabComponent } from './components/windows-tab/windows-tab.component';
 import { DashboardTabComponent } from './components/dashboard-tab/dashboard-tab.component';
+import { UsersTabComponent } from './components/users-tab/users-tab.component';
 import { authGuard, adminGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -45,6 +46,14 @@ export const routes: Routes = [
     canActivate: [authGuard, adminGuard],
     children: [
       { path: '', component: DashboardTabComponent }
+    ]
+  },
+  { 
+    path: 'users', 
+    component: AdminLayoutComponent, 
+    canActivate: [authGuard, adminGuard],
+    children: [
+      { path: '', component: UsersTabComponent }
     ]
   },
   { path: '**', redirectTo: '' }

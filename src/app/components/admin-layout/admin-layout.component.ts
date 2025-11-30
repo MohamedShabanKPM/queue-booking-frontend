@@ -51,12 +51,14 @@ export class AdminLayoutComponent implements OnInit {
       this.activeTab = 'windows';
     } else if (url === '/dashboard' || url === '/dashboard/') {
       this.activeTab = 'dashboard';
+    } else if (url === '/users' || url === '/users/') {
+      this.activeTab = 'users';
     }
   }
 
   setActiveTab(tab: string) {
-    // Prevent non-admin users from accessing dashboard
-    if (tab === 'dashboard' && !this.authService.isAdmin()) {
+    // Prevent non-admin users from accessing dashboard and users
+    if ((tab === 'dashboard' || tab === 'users') && !this.authService.isAdmin()) {
       return;
     }
     // Navigate to tracking page directly (public route)
