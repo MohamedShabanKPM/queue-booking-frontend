@@ -1,9 +1,21 @@
 <div class="tab-content">
   <div class="tab-header">
     <h2>{{ 'nav.users' | translate }}</h2>
-    <button class="btn btn-primary" (click)="openAddForm()">
-      <i class="fas fa-plus"></i> {{ 'users.addUser' | translate }}
-    </button>
+    <div class="header-actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          [(ngModel)]="searchTerm" 
+          (ngModelChange)="onSearchChange()"
+          [placeholder]="'users.searchPlaceholder' | translate"
+          name="searchTerm">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <button class="btn btn-primary" (click)="openAddForm()">
+        <i class="fas fa-plus"></i> {{ 'users.addUser' | translate }}
+      </button>
+    </div>
   </div>
 
   <div *ngIf="loading" class="loading-container">
@@ -14,6 +26,7 @@
     <table class="users-table">
       <thead>
         <tr>
+          <th>{{ 'users.id' | translate }}</th>
           <th>{{ 'users.name' | translate }}</th>
           <th>{{ 'users.email' | translate }}</th>
           <th>{{ 'users.role' | translate }}</th>
@@ -22,7 +35,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>
@@ -40,8 +54,10 @@
             </button>
           </td>
         </tr>
-        <tr *ngIf="users.length === 0">
-          <td colspan="5" class="no-data">{{ 'users.noUsers' | translate }}</td>
+        <tr *ngIf="filteredUsers.length === 0 && !loading">
+          <td colspan="6" class="no-data">
+            {{ searchTerm ? ('users.noResults' | translate) : ('users.noUsers' | translate) }}
+          </td>
         </tr>
       </tbody>
     </table>

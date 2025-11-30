@@ -132,6 +132,7 @@ export class I18nService {
     // Users
     'users.addUser': { ar: 'إضافة مستخدم', en: 'Add User' },
     'users.editUser': { ar: 'تعديل مستخدم', en: 'Edit User' },
+    'users.id': { ar: 'كود المستخدم', en: 'User ID' },
     'users.name': { ar: 'الاسم', en: 'Name' },
     'users.email': { ar: 'البريد الإلكتروني', en: 'Email' },
     'users.password': { ar: 'كلمة المرور', en: 'Password' },
@@ -140,6 +141,8 @@ export class I18nService {
     'users.create': { ar: 'إنشاء', en: 'Create' },
     'users.leaveBlank': { ar: 'اتركه فارغاً إذا لم تريد تغييره', en: 'Leave blank to keep unchanged' },
     'users.noUsers': { ar: 'لا يوجد مستخدمين', en: 'No users found' },
+    'users.searchPlaceholder': { ar: 'بحث بالاسم أو الرقم...', en: 'Search by name or ID...' },
+    'users.noResults': { ar: 'لا توجد نتائج', en: 'No results found' },
     'common.actions': { ar: 'الإجراءات', en: 'Actions' }
   };
 

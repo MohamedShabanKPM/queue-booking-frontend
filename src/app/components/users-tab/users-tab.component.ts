@@ -15,6 +15,8 @@ import { I18nService } from '../../services/i18n.service';
 })
 export class UsersTabComponent implements OnInit {
   users: UserDto[] = [];
+  filteredUsers: UserDto[] = [];
+  searchTerm: string = '';
   loading = false;
   showAddForm = false;
   showEditForm = false;
@@ -51,6 +53,7 @@ export class UsersTabComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: (data) => {
         this.users = data;
+        this.applyFilter();
         this.loading = false;
       },
       error: (err) => {
@@ -59,6 +62,24 @@ export class UsersTabComponent implements OnInit {
         alert(err.error?.error || 'Failed to load users');
       }
     });
+  }
+
+  applyFilter() {
+    if (!this.searchTerm.trim()) {
+      this.filteredUsers = this.users;
+      return;
+    }
+
+    const search = this.searchTerm.toLowerCase().trim();
+    this.filteredUsers = this.users.filter(user => {
+      const nameMatch = user.name.toLowerCase().includes(search);
+      const idMatch = user.id.toString().includes(search);
+      return nameMatch || idMatch;
+    });
+  }
+
+  onSearchChange() {
+    this.applyFilter();
   }
 
   openAddForm() {
@@ -103,6 +124,7 @@ export class UsersTabComponent implements OnInit {
       next: () => {
         this.loadUsers();
         this.closeAddForm();
+        this.searchTerm = ''; // Clear search after creating
         alert('User created successfully');
       },
       error: (err) => {
@@ -125,6 +147,7 @@ export class UsersTabComponent implements OnInit {
       next: () => {
         this.loadUsers();
         this.closeEditForm();
+        this.applyFilter(); // Reapply filter after update
         alert('User updated successfully');
       },
       error: (err) => {
@@ -141,6 +164,7 @@ export class UsersTabComponent implements OnInit {
     this.userService.deleteUser(user.id).subscribe({
       next: () => {
         this.loadUsers();
+        this.applyFilter(); // Reapply filter after delete
         alert('User deleted successfully');
       },
       error: (err) => {
