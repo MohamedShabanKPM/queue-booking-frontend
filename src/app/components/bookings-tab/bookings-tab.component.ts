@@ -7,6 +7,7 @@ import { BookingResponseDto } from '../../models/booking.model';
 import { QueueListComponent, QueueListColumn, QueueListButton } from '../queue-list/queue-list.component';
 import { QueuePopupComponent } from '../queue-popup/queue-popup.component';
 import { QueueFormField, QueueFormButton, QueueStatusBar } from '../queue-form/queue-form.component';
+import { QueueService } from '../../services/queue.service';
 import { VoiceService } from '../../services/voice.service';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -53,8 +54,9 @@ export class BookingsTabComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private authService: AuthService,
-    private voiceService: VoiceService,
-    public i18n: I18nService
+    public i18n: I18nService,
+    private queueService: QueueService,
+    private voiceService: VoiceService
   ) { }
 
   ngOnInit() {
@@ -110,8 +112,8 @@ export class BookingsTabComponent implements OnInit {
         label: this.i18n.translate('booking.startProcessing'),
         icon: 'fas fa-play',
         class: 'btn-link',
-        action: (row) => this.startProcessing(row),
-        visible: (row) => row.status === 'waiting'
+        action: (row) => this.openTracking(row),
+        visible: () => true
       }
     ];
   }
@@ -191,6 +193,23 @@ export class BookingsTabComponent implements OnInit {
   onRowClick(row: any) {
     // Use original booking data for popup
     this.openPopup(row._original || row);
+  }
+
+  openTracking(row: any) {
+    // Get the original booking data
+    const booking = row._original || row;
+    // Open the popup for the current row (like clicking the row)
+    this.openPopup(booking);
+    // Update current serving in tracking (this will trigger voice announcement in tracking screen)
+    this.queueService.updateServing(booking.queueNumber, booking.windowId || booking.windowNumber).subscribe({
+      next: () => {
+        // Successfully updated - the tracking screen will automatically detect the change
+        // and trigger the voice announcement
+      },
+      error: (err) => {
+        console.error('Error updating current serving:', err);
+      }
+    });
   }
 
   openPopup(booking: BookingResponseDto) {

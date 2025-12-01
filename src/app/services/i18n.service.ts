@@ -63,6 +63,7 @@ export class I18nService {
     'booking.recall': { ar: 'استدعاء', en: 'Recall' },
     'booking.nextReservation': { ar: 'الحجز التالي', en: 'Next Reservation' },
     'booking.getNextWaiting': { ar: '  التالي ', en: ' Next ' },
+    'booking.viewTracking': { ar: 'عرض التتبع', en: 'View Tracking' },
     
     // Tracking
     'tracking.title': { ar: 'حالة الطابور المباشرة', en: 'Live Queue Status' },

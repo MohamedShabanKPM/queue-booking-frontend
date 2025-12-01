@@ -28,13 +28,21 @@ export class VoiceService {
 
   announceReservation(queueNumber: number, windowNumber?: number, windowName?: string, forceRecall: boolean = false): void {
     if (!this.voiceEnabled) {
+      console.log('Voice is disabled');
       return;
     }
 
+    // Normalize window values for comparison (undefined and null are treated as same)
+    const normalizedWindow = windowNumber ?? null;
+    const normalizedLastWindow = this.lastAnnouncedWindow ?? null;
+
     // Don't re-announce the same number unless forced
-    if (!forceRecall && queueNumber === this.lastAnnouncedNumber && windowNumber === this.lastAnnouncedWindow) {
+    if (!forceRecall && queueNumber === this.lastAnnouncedNumber && normalizedWindow === normalizedLastWindow) {
+      console.log('Skipping duplicate announcement:', queueNumber, normalizedWindow);
       return;
     }
+
+    console.log('Announcing reservation:', queueNumber, 'Window:', normalizedWindow || windowName);
 
     // Stop any current speech
     this.speechSynthesis.cancel();
