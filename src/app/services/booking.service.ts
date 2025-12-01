@@ -61,5 +61,12 @@ export class BookingService {
     }
     return this.http.get<DashboardStatsDto>(url);
   }
+
+  updateBookingWindow(id: number, windowId?: number): Observable<any> {
+    const url = windowId 
+      ? `${this.apiUrl}/${id}/update-window?windowId=${windowId}`
+      : `${this.apiUrl}/${id}/update-window`;
+    return this.http.post(url, {});
+  }
 }
 

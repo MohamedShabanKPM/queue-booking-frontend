@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { BookingService } from '../../services/booking.service';
 import { AuthService } from '../../services/auth.service';
 import { BookingResponseDto } from '../../models/booking.model';
@@ -8,9 +9,15 @@ import { QueueListComponent, QueueListColumn, QueueListButton } from '../queue-l
 import { QueuePopupComponent } from '../queue-popup/queue-popup.component';
 import { QueueFormField, QueueFormButton, QueueStatusBar } from '../queue-form/queue-form.component';
 import { QueueService } from '../../services/queue.service';
-import { VoiceService } from '../../services/voice.service';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+
+interface Window {
+  id: number;
+  name: string;
+  number: number;
+  isActive: boolean;
+}
 
 @Component({
   selector: 'app-bookings-tab',
@@ -56,7 +63,7 @@ export class BookingsTabComponent implements OnInit {
     private authService: AuthService,
     public i18n: I18nService,
     private queueService: QueueService,
-    private voiceService: VoiceService
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -200,16 +207,54 @@ export class BookingsTabComponent implements OnInit {
     const booking = row._original || row;
     // Open the popup for the current row (like clicking the row)
     this.openPopup(booking);
-    // Update current serving in tracking (this will trigger voice announcement in tracking screen)
-    this.queueService.updateServing(booking.queueNumber, booking.windowNumber).subscribe({
-      next: () => {
-        // Successfully updated - the tracking screen will automatically detect the change
-        // and trigger the voice announcement
-      },
-      error: (err) => {
-        console.error('Error updating current serving:', err);
-      }
-    });
+    
+    // Get the current user's window and update booking window
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.http.get<Window>(`http://localhost:5000/api/windows/user/${user.id}`).subscribe({
+        next: (userWindow) => {
+          // Update booking window with user's window
+          this.bookingService.updateBookingWindow(booking.id, userWindow.id).subscribe({
+            next: () => {
+              // Update current serving in tracking (this will trigger voice announcement in tracking screen)
+              this.queueService.updateServing(booking.queueNumber, userWindow.id).subscribe({
+                next: () => {
+                  // Successfully updated - the tracking screen will automatically detect the change
+                  // and trigger the voice announcement
+                },
+                error: (err) => {
+                  console.error('Error updating current serving:', err);
+                }
+              });
+            },
+            error: (err) => {
+              console.error('Error updating booking window:', err);
+            }
+          });
+        },
+        error: () => {
+          // If user has no window, just update current serving without updating booking window
+          this.queueService.updateServing(booking.queueNumber, booking.windowNumber).subscribe({
+            next: () => {
+              console.log('Updated current serving without window assignment');
+            },
+            error: (err) => {
+              console.error('Error updating current serving:', err);
+            }
+          });
+        }
+      });
+    } else {
+      // No user, just update current serving
+      this.queueService.updateServing(booking.queueNumber, booking.windowNumber).subscribe({
+        next: () => {
+          console.log('Updated current serving without user');
+        },
+        error: (err) => {
+          console.error('Error updating current serving:', err);
+        }
+      });
+    }
   }
 
   openPopup(booking: BookingResponseDto) {
@@ -290,8 +335,16 @@ export class BookingsTabComponent implements OnInit {
       next: (booking) => {
         if (booking) {
           this.openPopup(booking);
-          // Announce the reservation with window name
-          this.voiceService.announceReservation(booking.queueNumber, booking.windowNumber, booking.windowName);
+          // Update current serving in tracking (this will trigger voice announcement in tracking screen)
+          this.queueService.updateServing(booking.queueNumber, booking.windowNumber).subscribe({
+            next: () => {
+              // Successfully updated - the tracking screen will automatically detect the change
+              // and trigger the voice announcement
+            },
+            error: (err) => {
+              console.error('Error updating current serving:', err);
+            }
+          });
         }
       },
       error: (err) => {
@@ -307,23 +360,76 @@ export class BookingsTabComponent implements OnInit {
       return;
     }
 
-    this.bookingService.startProcessing(booking.id, user.id).subscribe({
-      next: () => {
-        this.loadBookings();
-        if (this.showPopup) {
-          this.loadBookings();
-          // Refresh popup data
-          this.bookingService.getBooking(booking.id).subscribe({
-            next: (updated) => {
-              this.openPopup(updated);
-              // Announce the reservation with window name
-              this.voiceService.announceReservation(updated.queueNumber, updated.windowNumber, updated.windowName);
-            }
-          });
-        }
+    // Get user's window first
+    this.http.get<Window>(`http://localhost:5000/api/windows/user/${user.id}`).subscribe({
+      next: (userWindow) => {
+        // Start processing (this will update windowId in backend)
+        this.bookingService.startProcessing(booking.id, user.id).subscribe({
+          next: () => {
+            // Also explicitly update window to ensure it's set
+            this.bookingService.updateBookingWindow(booking.id, userWindow.id).subscribe({
+              next: () => {
+                this.loadBookings();
+                if (this.showPopup) {
+                  this.loadBookings();
+                  // Refresh popup data
+                  this.bookingService.getBooking(booking.id).subscribe({
+                    next: (updated) => {
+                      this.openPopup(updated);
+                      // Update current serving in tracking (this will trigger voice announcement in tracking screen)
+                      this.queueService.updateServing(updated.queueNumber, userWindow.id).subscribe({
+                        next: () => {
+                          // Successfully updated - the tracking screen will automatically detect the change
+                          // and trigger the voice announcement
+                        },
+                        error: (err) => {
+                          console.error('Error updating current serving:', err);
+                        }
+                      });
+                    }
+                  });
+                }
+              },
+              error: (err) => {
+                console.error('Error updating booking window:', err);
+                // Continue anyway
+                this.loadBookings();
+                if (this.showPopup) {
+                  this.loadBookings();
+                  this.bookingService.getBooking(booking.id).subscribe({
+                    next: (updated) => {
+                      this.openPopup(updated);
+                      this.queueService.updateServing(updated.queueNumber, userWindow.id).subscribe();
+                    }
+                  });
+                }
+              }
+            });
+          },
+          error: (err) => {
+            alert(err.error?.error || 'Failed to start processing');
+          }
+        });
       },
-      error: (err) => {
-        alert(err.error?.error || 'Failed to start processing');
+      error: () => {
+        // If user has no window, just start processing without window update
+        this.bookingService.startProcessing(booking.id, user.id).subscribe({
+          next: () => {
+            this.loadBookings();
+            if (this.showPopup) {
+              this.loadBookings();
+              this.bookingService.getBooking(booking.id).subscribe({
+                next: (updated) => {
+                  this.openPopup(updated);
+                  this.queueService.updateServing(updated.queueNumber, updated.windowNumber).subscribe();
+                }
+              });
+            }
+          },
+          error: (err) => {
+            alert(err.error?.error || 'Failed to start processing');
+          }
+        });
       }
     });
   }
@@ -366,15 +472,49 @@ export class BookingsTabComponent implements OnInit {
   }
 
   recallReservation(booking: BookingResponseDto) {
-    // Update current serving with forceRecall to trigger voice announcement in tracking screen
-    this.queueService.updateServing(booking.queueNumber, booking.windowNumber, true).subscribe({
-      next: () => {
-        // Successfully updated - the tracking screen will automatically detect the change
-        // and trigger the voice announcement with forceRecall
-        console.log('Recall: Updated current serving to', booking.queueNumber);
+    // Get the current user's window for the recall
+    const user = this.authService.getCurrentUser();
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+
+    // Get user's current window assignment
+    this.http.get<Window>(`http://localhost:5000/api/windows/user/${user.id}`).subscribe({
+      next: (userWindow) => {
+        // Update booking window with user's window
+        this.bookingService.updateBookingWindow(booking.id, userWindow.id).subscribe({
+          next: () => {
+            // Use the user's window for the recall
+            this.queueService.updateServing(booking.queueNumber, userWindow.id, true).subscribe({
+              next: () => {
+                // Successfully updated - the tracking screen will automatically detect the change
+                // and trigger the voice announcement with forceRecall using the user's window
+                console.log('Recall: Updated booking window and current serving to', booking.queueNumber, 'with user window:', userWindow.name);
+              },
+              error: (err) => {
+                console.error('Error recalling reservation:', err);
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Error updating booking window:', err);
+            // Still try to update current serving even if window update failed
+            this.queueService.updateServing(booking.queueNumber, userWindow.id, true).subscribe();
+          }
+        });
       },
       error: (err) => {
-        console.error('Error recalling reservation:', err);
+        // If user has no window assigned, use booking's window as fallback
+        console.warn('User has no window assigned, using booking window');
+        this.queueService.updateServing(booking.queueNumber, booking.windowNumber, true).subscribe({
+          next: () => {
+            console.log('Recall: Updated current serving to', booking.queueNumber, 'with booking window');
+          },
+          error: (err2) => {
+            console.error('Error recalling reservation:', err2);
+          }
+        });
       }
     });
   }
