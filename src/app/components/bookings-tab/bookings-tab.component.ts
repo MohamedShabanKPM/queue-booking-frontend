@@ -287,6 +287,14 @@ export class BookingsTabComponent implements OnInit {
         action: () => this.cancelBooking(booking),
         visible: true
       });
+      // Add Next Reservation button for waiting status
+      this.popupButtons.push({
+        label: this.i18n.translate('booking.nextReservation'),
+        class: 'btn-primary',
+        icon: 'fas fa-arrow-right',
+        action: () => this.getNextWaiting(),
+        visible: true
+      });
     } else if (booking.status === 'in_progress') {
       this.popupButtons.push({
         label: this.i18n.translate('booking.complete'),
@@ -303,6 +311,7 @@ export class BookingsTabComponent implements OnInit {
         visible: true
       });
     } else if (booking.status === 'completed') {
+      // Add Next Reservation button for completed status
       this.popupButtons.push({
         label: this.i18n.translate('booking.nextReservation'),
         class: 'btn-primary',
