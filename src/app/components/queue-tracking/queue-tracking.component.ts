@@ -36,6 +36,25 @@ export class QueueTrackingComponent implements OnInit, OnDestroy {
     // Enable voice service
     this.voiceService.enableVoice();
     
+    // Try to initialize voice with a silent test on user interaction
+    // This helps bypass the "not-allowed" error
+    const initVoice = () => {
+      try {
+        // Try to speak a silent utterance to initialize speech synthesis
+        const testUtterance = new SpeechSynthesisUtterance('');
+        testUtterance.volume = 0;
+        window.speechSynthesis.speak(testUtterance);
+        window.speechSynthesis.cancel();
+      } catch (e) {
+        console.warn('Could not initialize voice:', e);
+      }
+    };
+    
+    // Try to initialize on any user interaction
+    document.addEventListener('click', initVoice, { once: true });
+    document.addEventListener('touchstart', initVoice, { once: true });
+    document.addEventListener('keydown', initVoice, { once: true });
+    
     this.updateTime();
     this.updateDate();
     this.timeInterval = setInterval(() => {

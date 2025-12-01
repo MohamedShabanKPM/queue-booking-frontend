@@ -8,9 +8,25 @@ export class VoiceService {
   private voiceEnabled: boolean = true;
   private lastAnnouncedNumber: number = 0;
   private lastAnnouncedWindow: number | null = null;
+  private userInteractionRequired: boolean = true;
 
   constructor() {
     this.speechSynthesis = window.speechSynthesis || (window as any).webkitSpeechSynthesis;
+    
+    // Try to enable voice on page load by speaking a silent utterance
+    // This helps with browsers that require user interaction
+    if (this.speechSynthesis) {
+      try {
+        const testUtterance = new SpeechSynthesisUtterance('');
+        testUtterance.volume = 0;
+        this.speechSynthesis.speak(testUtterance);
+        this.speechSynthesis.cancel();
+        this.userInteractionRequired = false;
+      } catch (e) {
+        // If it fails, we'll need user interaction
+        this.userInteractionRequired = true;
+      }
+    }
   }
 
   enableVoice(): void {
@@ -29,6 +45,11 @@ export class VoiceService {
   announceReservation(queueNumber: number, windowNumber?: number, windowName?: string, forceRecall: boolean = false): void {
     if (!this.voiceEnabled) {
       console.log('Voice is disabled');
+      return;
+    }
+
+    if (!this.speechSynthesis) {
+      console.warn('Speech synthesis not supported');
       return;
     }
 
@@ -86,34 +107,66 @@ export class VoiceService {
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
+    // Wait for voices to be loaded
+    const speakWithVoices = () => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
-    // Try to find appropriate voice
-    const voices = this.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      const preferredVoice = voices.find(v => 
-        v.lang.startsWith(lang.split('-')[0]) && 
-        (lang.includes('ar') ? v.name.toLowerCase().includes('arabic') : true)
-      );
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
+      // Try to find appropriate voice
+      const voices = this.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        const preferredVoice = voices.find(v => 
+          v.lang.startsWith(lang.split('-')[0]) && 
+          (lang.includes('ar') ? v.name.toLowerCase().includes('arabic') : true)
+        );
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
       }
-    }
 
-    if (onEnd) {
-      utterance.onend = onEnd;
-    }
+      if (onEnd) {
+        utterance.onend = onEnd;
+      }
 
-    utterance.onerror = (error) => {
-      console.error('Speech synthesis error:', error);
-      if (onEnd) onEnd();
+      utterance.onerror = (error) => {
+        console.error('Speech synthesis error:', error);
+        // Handle "not-allowed" error specifically
+        if (error.error === 'not-allowed') {
+          console.warn('Speech synthesis not allowed. User interaction may be required.');
+          this.userInteractionRequired = true;
+        }
+        if (onEnd) onEnd();
+      };
+
+      try {
+        this.speechSynthesis.speak(utterance);
+      } catch (e) {
+        console.error('Error speaking:', e);
+        if (onEnd) onEnd();
+      }
     };
 
-    this.speechSynthesis.speak(utterance);
+    // Check if voices are loaded
+    if (this.speechSynthesis.getVoices().length > 0) {
+      speakWithVoices();
+    } else {
+      // Wait for voices to load
+      this.speechSynthesis.onvoiceschanged = () => {
+        speakWithVoices();
+        this.speechSynthesis.onvoiceschanged = null;
+      };
+      
+      // Fallback timeout
+      setTimeout(() => {
+        if (this.speechSynthesis.getVoices().length === 0) {
+          console.warn('Voices not loaded, speaking without voice selection');
+          speakWithVoices();
+        }
+      }, 1000);
+    }
   }
 
   private getArabicNumber(num: number): string {
