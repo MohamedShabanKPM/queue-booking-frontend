@@ -201,7 +201,7 @@ export class BookingsTabComponent implements OnInit {
     // Open the popup for the current row (like clicking the row)
     this.openPopup(booking);
     // Update current serving in tracking (this will trigger voice announcement in tracking screen)
-    this.queueService.updateServing(booking.queueNumber, booking.windowId || booking.windowNumber).subscribe({
+    this.queueService.updateServing(booking.queueNumber, booking.windowNumber).subscribe({
       next: () => {
         // Successfully updated - the tracking screen will automatically detect the change
         // and trigger the voice announcement
@@ -366,8 +366,17 @@ export class BookingsTabComponent implements OnInit {
   }
 
   recallReservation(booking: BookingResponseDto) {
-    // Recall/Re-announce the reservation with window name
-    this.voiceService.recallReservation(booking.queueNumber, booking.windowNumber, booking.windowName);
+    // Update current serving with forceRecall to trigger voice announcement in tracking screen
+    this.queueService.updateServing(booking.queueNumber, booking.windowNumber, true).subscribe({
+      next: () => {
+        // Successfully updated - the tracking screen will automatically detect the change
+        // and trigger the voice announcement with forceRecall
+        console.log('Recall: Updated current serving to', booking.queueNumber);
+      },
+      error: (err) => {
+        console.error('Error recalling reservation:', err);
+      }
+    });
   }
 
   // Transform data for Queue list

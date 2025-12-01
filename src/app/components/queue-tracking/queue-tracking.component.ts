@@ -24,6 +24,7 @@ export class QueueTrackingComponent implements OnInit, OnDestroy {
   private timeInterval?: any;
   private lastAnnouncedNumber: number = 0;
   private lastAnnouncedWindow: number | null = null;
+  private lastRecallTime: string | null = null;
 
   constructor(
     private queueService: QueueService,
@@ -53,27 +54,33 @@ export class QueueTrackingComponent implements OnInit, OnDestroy {
             this.lastAnnouncedNumber = data.currentServing;
             this.lastAnnouncedWindow = data.windowNumber || null;
           }
+          this.lastRecallTime = data.lastRecallTime || null;
           isFirstStatus = false;
           this.status = data;
           this.loading = false;
           return; // Skip announcement on first load
         }
         
+        // Check if recall time changed (force recall)
+        const recallTimeChanged = data.lastRecallTime && data.lastRecallTime !== this.lastRecallTime;
+        
         // Check if number changed and announce
         const windowChanged = (data.windowNumber || null) !== this.lastAnnouncedWindow;
         const numberChanged = data.currentServing !== this.lastAnnouncedNumber;
         
-        if (data.currentServing > 0 && (numberChanged || windowChanged)) {
-          console.log('Tracking: Announcing reservation:', data.currentServing, 'Window:', data.windowNumber || data.windowName);
+        // Announce if number/window changed OR if recall time changed (force recall)
+        if (data.currentServing > 0 && (numberChanged || windowChanged || recallTimeChanged)) {
+          console.log('Tracking: Announcing reservation:', data.currentServing, 'Window:', data.windowNumber || data.windowName, recallTimeChanged ? '(FORCE RECALL)' : '');
           // Use forceRecall to bypass VoiceService internal check since we're tracking state here
           this.voiceService.announceReservation(
             data.currentServing, 
             data.windowNumber || undefined,
             data.windowName,
-            true // Force recall since we've already checked for changes
+            recallTimeChanged || true // Force recall if recall time changed or if number/window changed
           );
           this.lastAnnouncedNumber = data.currentServing;
           this.lastAnnouncedWindow = data.windowNumber || null;
+          this.lastRecallTime = data.lastRecallTime || null;
         }
         
         this.status = data;
