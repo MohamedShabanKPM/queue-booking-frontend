@@ -56,8 +56,18 @@ export class QueueListComponent {
     if (column.type === 'status' && value) {
       return this.getStatusTranslation(value);
     }
-    if (column.type === 'date' && value) {
-      return new Date(value).toLocaleString();
+    if (column.type === 'date') {
+      // Check if value exists and is valid
+      if (!value || value === '-' || value === null || value === undefined) {
+        return '-';
+      }
+      // Try to parse the date
+      const date = new Date(value);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return '-';
+      }
+      return date.toLocaleString();
     }
     return value?.toString() || '';
   }
