@@ -115,6 +115,7 @@ export class I18nService {
     'dashboard.employee': { ar: 'الموظف', en: 'Employee' },
     'dashboard.total': { ar: 'الإجمالي', en: 'Total' },
     'dashboard.avgTime': { ar: 'متوسط الوقت', en: 'Avg Time' },
+    'dashboard.exportPDF': { ar: 'تصدير PDF', en: 'Export PDF' },
     
     // Customer Info
     'customer.title': { ar: 'معلومات العميل', en: 'Customer Information' },
