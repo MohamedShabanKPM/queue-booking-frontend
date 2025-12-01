@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../services/booking.service';
 import { DashboardStatsDto } from '../../models/booking.model';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-dashboard-tab',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './dashboard-tab.component.html',
   styleUrls: ['./dashboard-tab.component.css']
 })
@@ -16,7 +18,10 @@ export class DashboardTabComponent implements OnInit {
   loading = false;
   selectedDate: string = new Date().toISOString().split('T')[0];
 
-  constructor(private bookingService: BookingService) { }
+  constructor(
+    private bookingService: BookingService,
+    public i18n: I18nService
+  ) { }
 
   ngOnInit() {
     this.loadStats();

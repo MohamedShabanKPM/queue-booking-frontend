@@ -1,8 +1,8 @@
 <div class="tab-content">
   <div class="dashboard-header">
-    <h2>Dashboard Statistics</h2>
+    <h2>{{ 'dashboard.statistics' | translate }}</h2>
     <div class="date-filter">
-      <label>Select Date:</label>
+      <label>{{ 'dashboard.selectDate' | translate }}:</label>
       <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" class="form-control">
     </div>
   </div>
@@ -15,60 +15,39 @@
     <div class="stats-grid">
       <div class="stat-card">
         <h3>{{ stats.totalToday }}</h3>
-        <p>Total Bookings</p>
+        <p>{{ 'dashboard.totalBookings' | translate }}</p>
       </div>
       <div class="stat-card">
         <h3>{{ stats.waiting }}</h3>
-        <p>Waiting</p>
+        <p>{{ 'dashboard.waiting' | translate }}</p>
       </div>
       <div class="stat-card">
         <h3>{{ stats.inProgress }}</h3>
-        <p>In Progress</p>
+        <p>{{ 'dashboard.inProgress' | translate }}</p>
       </div>
       <div class="stat-card">
         <h3>{{ stats.completed }}</h3>
-        <p>Completed</p>
+        <p>{{ 'dashboard.completed' | translate }}</p>
       </div>
       <div class="stat-card">
         <h3>{{ stats.cancelled }}</h3>
-        <p>Cancelled</p>
+        <p>{{ 'dashboard.cancelled' | translate }}</p>
       </div>
     </div>
 
-    <div *ngIf="stats.timeStats && stats.timeStats.totalCompleted > 0" class="time-stats-section">
-      <h3>Time Statistics</h3>
-      <div class="time-stats-grid">
-        <div class="time-stat">
-          <label>Average Time:</label>
-          <span>{{ stats.timeStats.average }}</span>
-        </div>
-        <div class="time-stat">
-          <label>Min Time:</label>
-          <span>{{ stats.timeStats.min }}</span>
-        </div>
-        <div class="time-stat">
-          <label>Max Time:</label>
-          <span>{{ stats.timeStats.max }}</span>
-        </div>
-        <div class="time-stat">
-          <label>Total Completed:</label>
-          <span>{{ stats.timeStats.totalCompleted }}</span>
-        </div>
-      </div>
-    </div>
 
     <div *ngIf="stats.employeeStats.length > 0" class="employee-stats-section">
-      <h3>Employee Statistics</h3>
+      <h3>{{ 'dashboard.employeeStatistics' | translate }}</h3>
       <table class="table">
         <thead>
           <tr>
-            <th>Employee</th>
-            <th>Total</th>
-            <th>Completed</th>
-            <th>Cancelled</th>
-            <th>Avg Time</th>
-            <th>Min Time</th>
-            <th>Max Time</th>
+            <th>{{ 'dashboard.employee' | translate }}</th>
+            <th>{{ 'dashboard.total' | translate }}</th>
+            <th>{{ 'dashboard.completed' | translate }}</th>
+            <th>{{ 'dashboard.cancelled' | translate }}</th>
+            <th>{{ 'dashboard.avgTime' | translate }}</th>
+            <th>{{ 'dashboard.minTime' | translate }}</th>
+            <th>{{ 'dashboard.maxTime' | translate }}</th>
           </tr>
         </thead>
         <tbody>

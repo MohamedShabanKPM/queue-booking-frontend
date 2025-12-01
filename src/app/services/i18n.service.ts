@@ -99,10 +99,22 @@ export class I18nService {
     
     // Dashboard
     'dashboard.title': { ar: 'لوحة التحكم', en: 'Dashboard' },
+    'dashboard.statistics': { ar: 'إحصائيات لوحة التحكم', en: 'Dashboard Statistics' },
     'dashboard.totalBookings': { ar: 'إجمالي الحجوزات', en: 'Total Bookings' },
     'dashboard.waiting': { ar: 'في الانتظار', en: 'Waiting' },
     'dashboard.inProgress': { ar: 'قيد المعالجة', en: 'In Progress' },
     'dashboard.completed': { ar: 'مكتمل', en: 'Completed' },
+    'dashboard.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+    'dashboard.selectDate': { ar: 'اختر التاريخ', en: 'Select Date' },
+    'dashboard.timeStatistics': { ar: 'إحصائيات الوقت', en: 'Time Statistics' },
+    'dashboard.averageTime': { ar: 'متوسط الوقت', en: 'Average Time' },
+    'dashboard.minTime': { ar: 'أقل وقت', en: 'Min Time' },
+    'dashboard.maxTime': { ar: 'أكثر وقت', en: 'Max Time' },
+    'dashboard.totalCompleted': { ar: 'إجمالي المكتمل', en: 'Total Completed' },
+    'dashboard.employeeStatistics': { ar: 'إحصائيات الموظفين', en: 'Employee Statistics' },
+    'dashboard.employee': { ar: 'الموظف', en: 'Employee' },
+    'dashboard.total': { ar: 'الإجمالي', en: 'Total' },
+    'dashboard.avgTime': { ar: 'متوسط الوقت', en: 'Avg Time' },
     
     // Customer Info
     'customer.title': { ar: 'معلومات العميل', en: 'Customer Information' },
