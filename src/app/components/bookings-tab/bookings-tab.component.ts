@@ -120,7 +120,7 @@ export class BookingsTabComponent implements OnInit {
         icon: 'fas fa-play',
         class: 'btn-link',
         action: (row) => this.openTracking(row),
-        visible: () => true
+        visible: (row) => row.status === 'waiting'
       }
     ];
   }
